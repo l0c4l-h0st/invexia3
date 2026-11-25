@@ -146,6 +146,13 @@ export class AudioEngine {
         for (const [f, a] of [[2920, 0.06], [4630, 0.04], [6310, 0.025], [8110, 0.015]]) this._tone(t + 0.04, f, 1.1, a);
         break;
       case 'inspect-end': this._noise(t, 0.03, 'highpass', 3000, 0.7, 0.08); this._tone(t, 1800, 0.12, 0.02, 'triangle'); break;
+      // figures du karambit
+      case 'kdraw': this._noise(t, 0.22, 'bandpass', 900, 0.7, 0.1, 0.03, this.fx, this.pink, 1800); for (const f of [2380, 3720]) this._tone(t + 0.1, f, 0.6, 0.022); break;
+      case 'kspin': this._noise(t, 0.32, 'bandpass', 1400, 2.2, 0.13, 0.04, this.fx, this.noise, 3600); this._noise(t + 0.14, 0.22, 'bandpass', 2200, 2.5, 0.08, 0.03, this.fx, this.noise, 4200); break;
+      case 'kcatch': this._noise(t, 0.035, 'highpass', 2600, 0.8, 0.14); this._tone(t, 1250, 0.09, 0.035, 'triangle'); this._tone(t + 0.005, 3150, 0.35, 0.02); break;
+      case 'ktoss': this._noise(t, 0.45, 'bandpass', 700, 1.2, 0.12, 0.05, this.fx, this.pink, 2400); break;
+      case 'kflick': this._noise(t, 0.12, 'bandpass', 1800, 1.5, 0.12, 0.01, this.fx, this.noise, 900); break;
+      case 'kflip': this.play('inspect-flip'); break;
       case 'respawn': this._noise(t, 0.6, 'lowpass', 600, 0.7, 0.2, 0.1, this.fx, this.pink, 200); break;
       case 'ui': this._tone(t, 880, 0.06, 0.05, 'triangle'); break;
       case 'gate': this._tone(t, 660, 0.15, 0.1, 'triangle'); this._tone(t + 0.12, 990, 0.25, 0.1, 'triangle'); break;

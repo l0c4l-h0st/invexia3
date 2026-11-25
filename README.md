@@ -7,4 +7,4 @@ Jeu de déplacement à la première personne pour navigateur de bureau : balade 
 - **Sources, build et tests** : voir [`web/README.md`](web/README.md).
 
 Commandes : ZQSD/WASD, souris, Maj (sprint), Espace maintenu (bunny hop), Ctrl (frein), C (glissade/plongeon),
-F (inspecter le couteau), Échap (pause et réglages). Limite technique : 400 m/s.
+F (figures au karambit), R (retour à l’élan), F1 (réglages de physique), Échap (pause). Limite technique : 400 m/s.

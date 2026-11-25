@@ -20,16 +20,25 @@ export class Bot {
     this.reach = opts.reach ?? 40;
     this.maxYawRate = 0;
     this.surfSide = 0;
+    // comportement humain : une touche de strafe est tenue au moins `minHold` secondes
+    this.minHold = opts.minHold ?? 0.18;
+    this.side = 1; this.sideT = 0; this.switches = 0;
   }
 
   target(p) {
     if (!this.route.length) return null;
     let t = this.route[this.wp];
-    const d = Math.hypot(t.x - p.x, t.z - p.z);
-    if (d < (t.reach ?? this.reach)) {
-      if (this.wp < this.route.length - 1) this.wp++;
-      else if (this.loop) this.wp = 0;
-      t = this.route[this.wp];
+    for (let guard = 0; guard < 4; guard++) {
+      const d = Math.hypot(t.x - p.x, t.z - p.z);
+      const n = this.route[this.wp + 1];
+      // point atteint, ou dépassé (on est déjà au-delà dans la direction du point suivant)
+      const passed = n && ((p.x - t.x) * (n.x - t.x) + (p.z - t.z) * (n.z - t.z)) > 0 && d < 90;
+      if (d < (t.reach ?? this.reach) || passed) {
+        if (this.wp < this.route.length - 1) this.wp++;
+        else if (this.loop) this.wp = 0;
+        else break;
+        t = this.route[this.wp];
+      } else break;
     }
     return t;
   }
@@ -60,6 +69,12 @@ export class Bot {
       return inp;
     }
     let err = wrap(goalH - velH);
+    // dans un couloir en U : ne pas pousser contre les berges, se laisser revenir au fond
+    if (pl.surfing && t && t.nopush) {
+      this.turnTo(goalH, dt);
+      inp.yaw = this.yaw;
+      return inp;
+    }
     // en surf : rester plaqué contre la rampe (strafe vers la pente)
     if (pl.surfing) {
       const n = pl.surfN;
@@ -67,26 +82,32 @@ export class Bot {
       const side = wrap(into - velH) > 0 ? 1 : -1; // 1 = rampe à gauche
       this.surfSide = side;
       // regarde le long de la vitesse, légèrement vers la cible
-      const look = velH + Math.max(-0.25, Math.min(0.25, err));
+      const look = velH + Math.max(-0.45, Math.min(0.45, err));
       this.turnTo(look, dt);
       inp.yaw = this.yaw;
-      if (side > 0) inp.left = true; else inp.right = true;
+      // dosage : on relâche la poussée quand on remonte la face (sinon on passe le faîte)
+      const push = pl.vel.y < 2.0;
+      if (push) { if (side > 0) inp.left = true; else inp.right = true; }
       return inp;
     }
-    let side;
-    if (Math.abs(err) > 0.06) side = err > 0 ? 1 : -1;
-    else {
-      this.altT += dt;
-      if (this.altT > 0.32) { this.altT = 0; this.altSide = -this.altSide; }
-      side = this.altSide;
-    }
+    this.sideT += dt;
+    // contrôle « tout ou rien » avec hystérésis : on change de côté quand on a dépassé le cap visé
+    let want = this.side;
+    if (Math.abs(err) > 0.35) want = err > 0 ? 1 : -1;
+    else if (this.side > 0 && err < -0.06) want = -1;
+    else if (this.side < 0 && err > 0.06) want = 1;
+    if (want !== this.side && this.sideT >= this.minHold) { this.side = want; this.sideT = 0; this.switches++; }
+    const side = this.side;
     if (hs > this.cruise && Math.abs(err) < 0.1) {
       // vitesse de croisière atteinte : on suit simplement la trajectoire
       this.turnTo(velH + err, dt);
       inp.yaw = this.yaw;
       return inp;
     }
-    const w = PHYS.airWishCap, a = PHYS.airAccel * PHYS.airRefSpeed * dt;
+    // dosage humain : la vitesse ne tourne pas plus vite que ~125°/s en ligne droite (~230°/s en virage)
+    const w = PHYS.airWishCap, aMax = Math.min(w, PHYS.airAccel * PHYS.airRefSpeed * dt);
+    const velTurn = Math.abs(err) > 0.35 ? 4.0 : 2.2;
+    const a = Math.min(aMax, Math.max(0.05, hs * velTurn * dt));
     const c = Math.max(-1, Math.min(1, (w - a) / Math.max(hs, 0.01)));
     const theta = Math.acos(c);
     const wishH = velH + side * theta;

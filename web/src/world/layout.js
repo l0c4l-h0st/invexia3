@@ -18,11 +18,11 @@ const TINT = {
 const CONTAINER_COLORS = [[0.85, 0.39, 0.12], [0.23, 0.25, 0.28], [0.54, 0.23, 0.15], [0.31, 0.42, 0.43], [0.79, 0.72, 0.61], [0.27, 0.33, 0.42], [0.9, 0.5, 0.18]];
 
 // ---------- profils ----------
-function channelParts(getHw, getHb, ang = 55, faceMat = 'orange', floorMat = 'deck') {
-  const t = Math.tan(ang * D2R);
-  const floor = { fn: (f) => { const hw = getHw(f); return [[-hw, 0], [hw, 0], [hw, -2], [-hw, -2]]; }, mats: [floorMat, 'concreteDark', 'concreteDark', 'concreteDark'] };
-  const right = { fn: (f) => { const hw = getHw(f), hb = getHb(f), run = hb / t; return [[hw, -2], [hw, 0], [hw + run, hb], [hw + run + 1.2, hb], [hw + run + 1.2, -2]]; }, mats: ['none', faceMat, 'steel', 'concrete', 'concreteDark'] };
-  const left = { fn: (f) => { const hw = getHw(f), hb = getHb(f), run = hb / t; return [[-hw, -2], [-hw, 0], [-hw - run, hb], [-hw - run - 1.2, hb], [-hw - run - 1.2, -2]]; }, mats: ['none', faceMat, 'steel', 'concrete', 'concreteDark'] };
+function channelParts(getHw, getHb, ang = 55, faceMat = 'orange', floorMat = 'deck', depth = 2) {
+  const t = Math.tan(ang * D2R), d = -depth;
+  const floor = { fn: (f) => { const hw = getHw(f); return [[-hw, 0], [hw, 0], [hw, d], [-hw, d]]; }, mats: [floorMat, 'concreteDark', 'concreteDark', 'concreteDark'] };
+  const right = { fn: (f) => { const hw = getHw(f), hb = getHb(f), run = hb / t; return [[hw, d], [hw, 0], [hw + run, hb], [hw + run + 1.2, hb], [hw + run + 1.2, d]]; }, mats: ['none', faceMat, 'steel', 'concrete', 'concreteDark'] };
+  const left = { fn: (f) => { const hw = getHw(f), hb = getHb(f), run = hb / t; return [[-hw, d], [-hw, 0], [-hw - run, hb], [-hw - run - 1.2, hb], [-hw - run - 1.2, d]]; }, mats: ['none', faceMat, 'steel', 'concrete', 'concreteDark'] };
   return [floor, right, left];
 }
 function wedgeParts(H, ang) {
@@ -72,8 +72,10 @@ export function buildWorld(B) {
   const wH = 16, wA = 57;
   const cPath = (ctrl) => spline(ctrl.map(([s, l, y]) => ({ ...NE(s, l), y })), 6);
   // une seule coulée continue de 1,5 km : départ droit, grand S, puis tremplin vers la réception
-  const C1 = cPath([[24, 0, 101], [130, 0, 95], [230, 0, 87.5], [330, 2, 80], [470, 38, 71.5], [610, 100, 64], [750, 132, 57.5], [880, 104, 51.5], [985, 44, 46.5], [1120, -36, 40.5], [1255, -92, 35], [1385, -70, 30], [1475, -14, 26.5], [1535, 0, 28], [1560, 0, 31]]);
-  const REC = cPath([[1598, 0, 8.5], [1760, 0, 7], [1890, 0, 5.5], [2000, 0, 3.5], [2035, 0, 2.2]]);
+  const C1 = cPath([[24, 0, 101], [130, 0, 95], [230, 0, 87.5], [330, 2, 80], [470, 24, 71.5], [610, 62, 64], [750, 82, 57.5], [880, 64, 51.5], [985, 26, 46.5], [1120, -24, 40.5], [1255, -58, 35], [1385, -44, 30], [1475, -9, 26.5], [1535, 0, 28], [1560, 0, 31]]);
+  // couloir de réception : entrée en entonnoir (large et basse), plein jusqu'au sol
+  const REC = cPath([[1495, 0, 3.4], [1620, 0, 3.6], [1760, 0, 3.6], [1890, 0, 3.4], [2000, 0, 3], [2035, 0, 2.2]]);
+  { let d = 0; REC.forEach((p, i) => { if (i) d += Math.hypot(p.x - REC[i - 1].x, p.z - REC[i - 1].z); p.hw = 5 + 8 * (1 - smoothstep(40, 230, d)); }); }
   for (const P of [C1]) {
     B.sweep(P, wedgeParts(wH, wA), { always: true, mat: 'orange' });
     B.addKeepOut(P, 32, -400, 30);
@@ -93,7 +95,7 @@ export function buildWorld(B) {
       B.box({ c: [p.x, bot - 0.5, p.z], h: [7, 0.5, 0.5], yaw: Math.atan2(sx, sz) + Math.PI / 2, mat: 'steel', solid: false });
     }
   }
-  const recParts = channelParts(() => 5, () => 18, 55, 'orange', 'deck');
+  const recParts = channelParts((f) => f.p.hw, () => 20, 55, 'orange', 'deck', 12);
   B.sweep(REC, recParts, { always: true });
   B.addKeepOut(REC, 34, -400, 40);
   info.routes.coulees = [C1, REC];

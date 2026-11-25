@@ -23,8 +23,34 @@ const settings = (() => {
   try { return { ...DEFAULT_SETTINGS, ...JSON.parse(localStorage.getItem('velocity.settings') || '{}') }; } catch { return { ...DEFAULT_SETTINGS }; }
 })();
 if (TEST.settings) Object.assign(settings, TEST.settings);
+if (settings.fpsCounter === undefined) settings.fpsCounter = true;
 const save = () => { try { localStorage.setItem('velocity.settings', JSON.stringify(settings)); } catch { /* stockage indisponible */ } };
 const store = { get(k, d) { try { const v = localStorage.getItem(k); return v === null ? d : JSON.parse(v); } catch { return d; } }, set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch { /* rien */ } } };
+
+// ---------------- physique réglable (F1) ----------------
+const PHYS_DEFAULT = { ...PHYS };
+const TUNABLE = [
+  ['airAccel', 'Accélération en l\'air', 5, 120, 1, (v) => v.toFixed(0)],
+  ['airWishCap', 'Plafond de strafe (m/s)', 0.3, 4, 0.05, (v) => v.toFixed(2)],
+  ['gravity', 'Gravité (m/s²)', 8, 30, 0.1, (v) => v.toFixed(1)],
+  ['jumpVel', 'Impulsion de saut (m/s)', 4, 11, 0.05, (v) => v.toFixed(2)],
+  ['friction', 'Friction au sol', 1, 10, 0.1, (v) => v.toFixed(1)],
+  ['frictionMaxDecel', 'Friction max (m/s²)', 10, 300, 1, (v) => (v >= 300 ? 'libre' : v.toFixed(0))],
+  ['walkSpeed', 'Marche (m/s)', 3, 9, 0.1, (v) => v.toFixed(1)],
+  ['sprintSpeed', 'Sprint (m/s)', 5, 14, 0.1, (v) => v.toFixed(1)],
+  ['slideBoost', 'Élan de glissade (m/s)', 0, 8, 0.1, (v) => v.toFixed(1)],
+];
+const pickTunable = (o) => Object.fromEntries(TUNABLE.map(([k]) => [k, o[k]]));
+const PRESETS = {
+  arcade: { airAccel: 60, airWishCap: 2.8, gravity: 18, jumpVel: 7.6, friction: 4, frictionMaxDecel: 35, walkSpeed: 5.6, sprintSpeed: 9.4, slideBoost: 4 },
+  standard: pickTunable(PHYS_DEFAULT),
+  source: { airAccel: 12, airWishCap: 0.76, gravity: 20.3, jumpVel: 7.15, friction: 5.2, frictionMaxDecel: 300, walkSpeed: 6.35, sprintSpeed: 6.35, slideBoost: 2 },
+};
+const PRESET_NOTES = {
+  arcade: 'Arcade : gains de strafe plus forts, 100 m/s vite atteints, réceptions plus douces.',
+  standard: 'Standard : réglage livré, environ 16 s de rebonds bien synchronisés pour passer 100 m/s sur du plat, moins avec une descente.',
+  source: 'Source classique : plafond de strafe de 30 unités (0,76 m/s), friction sans limite. Exigeant : chaque m/s se mérite.',
+};
 
 const G = {
   state: 'loading', yaw: 0, pitch: 0, yawPrev: 0, acc: 0, time: 0,
@@ -34,11 +60,15 @@ const G = {
   pen: { max: 0, over5cm: 0, checks: 0 },
   bot: null, synth: null, help: { shown: false, t: 0, done: new Set() },
   milestones: new Set(), act: null, slidePressed: false,
+  simTime: 0, snaps: [], snapAcc: 0, rewindDepth: 3, lastRewindAt: -99, rewinds: 0,
+  sync: { n: 0, ok: 0, v0: 0, live: false }, syncLast: null, syncYaw: null,
   inspectCount: 0, airStart: 0,
 };
 window.__velocity = { G };
 
+function applyPhys(o) { Object.assign(PHYS, o); }
 async function boot() {
+  if (!TEST.quality) { try { const sp = JSON.parse(localStorage.getItem('velocity.phys') || 'null'); if (sp) applyPhys(sp); } catch { /* rien */ } }
   const setLoad = (p, m) => { $('loadbar').style.width = `${Math.round(p * 100)}%`; $('loadmsg').textContent = m; };
   setLoad(0.05, 'Coulée du terrain…'); await nextFrame();
   const terrain = new Terrain();
@@ -130,6 +160,23 @@ function bindUI() {
     if (G.state === 'playing') pause();
     else if (G.state === 'paused' && performance.now() - (G.pausedAt || 0) > 400) startPlay(false);
   };
+  window.addEventListener('keydown', (e) => {
+    if (e.code !== 'F1') return;
+    e.preventDefault();
+    if (G.state === 'playing') openTuner();
+    else if (G.tuning) startPlay(false);
+  }, { capture: true });
+  $('tuner-close').addEventListener('click', () => startPlay(false));
+  $('s-fps').checked = settings.fpsCounter;
+  $('s-fps').addEventListener('change', (e) => { settings.fpsCounter = e.target.checked; save(); });
+  document.querySelectorAll('#presets .preset').forEach((b) => b.addEventListener('click', () => { setPreset(b.dataset.preset); }));
+  const box = $('physsliders');
+  for (const [k, label, min, max, step, fmt] of TUNABLE) {
+    const l = document.createElement('label'); l.className = 'set';
+    l.innerHTML = `${label} <input type="range" id="p-${k}" min="${min}" max="${max}" step="${step}"><output id="po-${k}"></output>`;
+    box.appendChild(l);
+    l.querySelector('input').addEventListener('input', (e) => { PHYS[k] = +e.target.value; $(`po-${k}`).textContent = fmt(PHYS[k]); savePhys(); markPreset(); });
+  }
   window.addEventListener('beforeunload', (e) => { if (G.state === 'playing' || G.state === 'paused') { e.preventDefault(); e.returnValue = ''; } });
   document.addEventListener('visibilitychange', () => { if (document.hidden && G.state === 'playing') pause(); });
 }
@@ -153,9 +200,35 @@ async function startPlay(first) {
   }
 }
 
+function savePhys() { try { localStorage.setItem('velocity.phys', JSON.stringify(pickTunable(PHYS))); } catch { /* rien */ } }
+function markPreset() {
+  const cur = pickTunable(PHYS);
+  let found = null;
+  for (const [name, p] of Object.entries(PRESETS)) if (Object.keys(p).every((k) => Math.abs(p[k] - cur[k]) < 1e-6)) found = name;
+  document.querySelectorAll('#presets .preset').forEach((b) => b.classList.toggle('on', b.dataset.preset === found));
+  $('presetnote').textContent = found ? PRESET_NOTES[found] : 'Réglage personnalisé.';
+}
+function setPreset(name) { applyPhys(PRESETS[name]); savePhys(); refreshTuner(); G.audio.play('ui'); }
+function refreshTuner() {
+  for (const [k, , , , , fmt] of TUNABLE) { $(`p-${k}`).value = PHYS[k]; $(`po-${k}`).textContent = fmt(PHYS[k]); }
+  markPreset();
+}
+function openTuner() {
+  if (G.state !== 'playing') return;
+  G.state = 'paused'; G.tuning = true;
+  G.pausedAt = performance.now();
+  G.input.enabled = false;
+  G.input.unlock();
+  G.audio.suspend();
+  $('tuner').hidden = false; $('hud').hidden = true;
+  refreshTuner();
+}
+
 function enterPlaying() {
   const { input, audio } = G;
   G.state = 'playing';
+  G.tuning = false;
+  $('tuner').hidden = true;
   input.enabled = true;
   input.clearEdges();
   input.takeMouse();
@@ -177,6 +250,30 @@ function pause() {
   $('hud').hidden = true;
   updateStats();
   $('act-stop').hidden = !G.act;
+}
+
+/** R : revient ~3 s en arrière, vitesse comprise (y compris en plein saut). On évite les instants
+ *  de chute profonde ; des appuis rapprochés remontent plus loin. */
+function rewind() {
+  const pl = G.player, now = G.simTime;
+  const back = now - G.lastRewindAt < 2.5 ? G.rewindDepth + 3 : 3;
+  const target = now - back;
+  let snap = null;
+  for (let i = G.snaps.length - 1; i >= 0; i--) { const s = G.snaps[i]; if (s.t <= target && s.ok) { snap = s; break; } }
+  if (!snap) for (let i = G.snaps.length - 1; i >= 0; i--) { if (G.snaps[i].t <= target) { snap = G.snaps[i]; break; } }
+  if (!snap) snap = G.snaps[0];
+  if (!snap) return false;
+  G.lastRewind = { from: { x: pl.pos.x, z: pl.pos.z, speed: pl.hspeed }, to: { x: snap.x, z: snap.z, speed: Math.hypot(snap.vx, snap.vz) }, seconds: now - snap.t };
+  pl.spawn(snap.x, snap.y, snap.z, snap.yaw);
+  pl.vel.x = snap.vx; pl.vel.y = snap.vy; pl.vel.z = snap.vz;
+  G.yaw = snap.yaw; G.pitch = snap.pitch; G.syncYaw = null;
+  G.snaps = G.snaps.filter((s) => s.t <= snap.t);
+  G.rewindDepth = back; G.lastRewindAt = now; G.rewinds++;
+  G.R.stream.grace = 30;
+  G.audio.play('respawn');
+  helpDone('rewind');
+  toast('Retour à l\'élan', `−${(now - snap.t).toFixed(1)} s · ${Math.round(Math.hypot(snap.vx, snap.vz))} m/s`);
+  return true;
 }
 
 function respawn() {
@@ -301,6 +398,7 @@ function frame(now) {
     G.pitch -= mdy * sens * (settings.invertY ? -1 : 1);
     G.pitch = Math.max(-1.55, Math.min(1.55, G.pitch));
     if (input.pressed('KeyF')) { vm.startInspect(); G.inspectCount++; helpDone('inspect'); }
+    if (input.pressed('KeyR')) rewind();
     if (input.pressed('KeyH')) showHelp($('help').hidden);
     if (input.pressed('KeyC')) G.slidePressed = true;
     if (input.pressed('Space')) G.jumpBuffer = 0.12; // un appui bref n'est jamais perdu
@@ -326,8 +424,23 @@ function frame(now) {
       inp.slidePressed = G.slidePressed; G.slidePressed = false;
       if (G.jumpBuffer > 0) { inp.jumpPressed = true; G.jumpBuffer -= TICK; if (pl.onGround) G.jumpBuffer = 0; }
       if (inp.slide && G.synthSlideEdge) { inp.slidePressed = true; G.synthSlideEdge = false; }
+      // jauge de synchronisation : en l'air, la souris tourne-t-elle du côté de la touche de strafe ?
+      const dyaw = G.syncYaw === null ? 0 : wrap(inp.yaw - G.syncYaw);
+      G.syncYaw = inp.yaw;
+      if (!pl.onGround && !pl.surfing && G.sync.live) {
+        const sl = inp.left && !inp.right, sr = inp.right && !inp.left, turning = Math.abs(dyaw) > 2e-5;
+        if (sl || sr || turning) { G.sync.n++; if ((sl && dyaw > 2e-5) || (sr && dyaw < -2e-5)) G.sync.ok++; }
+      }
       const vyAir = pl.vel.y;
       pl.tick(inp, TICK);
+      G.simTime += TICK;
+      // instantanés pour le retour à l'élan (R)
+      G.snapAcc += TICK;
+      if (G.snapAcc >= 0.2) {
+        G.snapAcc = 0;
+        G.snaps.push({ t: G.simTime, x: pl.pos.x, y: pl.pos.y, z: pl.pos.z, vx: pl.vel.x, vy: pl.vel.y, vz: pl.vel.z, yaw: G.yaw, pitch: G.pitch, ok: pl.onGround || pl.surfing || pl.vel.y > -22 });
+        if (G.snaps.length > 200) G.snaps.shift();
+      }
       handleEvents(pl, vyAir);
       // contrôle anti-traversée
       if ((G.pen.checks++ & 3) === 0) {
@@ -415,6 +528,14 @@ function frame(now) {
   });
 
   if (G.state !== 'title') updateHUD(dt);
+  if (G.tuning) {
+    G.perfT = (G.perfT || 0) - dt;
+    if (G.perfT <= 0) {
+      G.perfT = 0.5;
+      const f = window.__velocity.frameStats(), inf = R.renderer.info.render;
+      $('perf').innerHTML = `<div><b>${Math.round(f.fps)}</b><span>images/s</span></div><div><b>${(f.p50 || 0).toFixed(1)}</b><span>ms médiane</span></div><div><b>${(f.p95 || 0).toFixed(1)}</b><span>ms 95e centile</span></div><div><b>${inf.calls}</b><span>appels de dessin</span></div>`;
+    }
+  }
   R.render();
   vm.render();
 }
@@ -424,9 +545,14 @@ function handleEvents(pl, vyAir) {
   for (const e of pl.events) {
     switch (e.type) {
       case 'step': audio.play('step', e); break;
-      case 'jump': audio.play('jump', e); break;
+      case 'jump':
+        audio.play('jump', e);
+        G.sync = { n: 0, ok: 0, v0: e.speed, live: true };
+        break;
       case 'land': {
         audio.play('land', e);
+        if (G.sync.live && G.sync.n > 8) G.syncLast = { pct: Math.round(100 * G.sync.ok / G.sync.n), gain: pl.hspeed - G.sync.v0 };
+        G.sync.live = false;
         const chainK = pl.stats.chain > 0 ? 0.45 : 1;
         const k = Math.min(1, e.impact / 25);
         G.camDip.v -= (0.4 + 2.6 * k) * chainK * (e.dive ? 1.4 : 1);
@@ -497,6 +623,19 @@ function updateHUD(dt) {
     const bar = $('spdbar');
     bar.style.width = `${frac * 100}%`;
     bar.style.background = hs > 100 ? '#ffd08a' : hs > 50 ? '#ffb15a' : '#f06a1c';
+    const sy = G.sync.live && G.sync.n > 8 ? { pct: Math.round(100 * G.sync.ok / G.sync.n), gain: pl.hspeed - G.sync.v0, live: true } : G.syncLast;
+    const syEl = $('sync');
+    if (sy && (hs > 6 || sy.live)) {
+      const cls = sy.pct >= 75 ? 'good' : sy.pct >= 45 ? 'mid' : 'low';
+      syEl.innerHTML = `sync <b class="${cls}">${sy.pct} %</b> · ${sy.gain >= 0 ? '+' : '−'}${Math.abs(sy.gain).toFixed(1).replace('.', ',')} m/s${sy.live ? '' : ' au dernier saut'}`;
+    } else syEl.textContent = '';
+    G.fpsT2 = (G.fpsT2 || 0) - 1 / 20;
+    if (G.fpsT2 <= 0) {
+      G.fpsT2 = 0.5;
+      const f = window.__velocity.frameStats();
+      $('fps').hidden = !settings.fpsCounter;
+      if (settings.fpsCounter) $('fps').textContent = `${Math.round(f.fps)} i/s · ${(f.p50 || 0).toFixed(1)} ms`;
+    }
     const flags = [];
     if (pl.surfing) flags.push('SURF');
     if (pl.slideT > 0) flags.push('GLISSADE');
@@ -542,7 +681,7 @@ Object.assign(window.__velocity, {
   sectorLog: () => G.sectorLog.map((s) => ({ ...s })),
   routes() {
     const pick = (path, step = 6) => path.filter((_, i) => i % step === 0).map((p) => ({ x: p.x, y: p.y, z: p.z }));
-    return { viaduc: pick(G.info.routes.viaduc, 3), ring: pick(G.info.routes.ring, 4), coulees: G.info.routes.coulees.map((c) => pick(c, 2)), plazas: G.info.plazas.map((p) => ({ id: p.id, x: p.x, z: p.z, y: p.y, tx: p.tx, tz: p.tz, sx: p.sx, sz: p.sz, rx: p.rx, rz: p.rz })), couleesFace: G.info.routes.coulees.map((c) => c.filter((_, i) => i % 2 === 0).map((p, i, a) => { const q = a[Math.min(a.length - 1, i + 1)], o = a[Math.max(0, i - 1)]; let tx = q.x - o.x, tz = q.z - o.z; const l = Math.hypot(tx, tz) || 1; tx /= l; tz /= l; return { x: p.x - tz * 5.5, z: p.z + tx * 5.5, y: p.y - 4 }; })) };
+    return { viaduc: pick(G.info.routes.viaduc, 3), ring: pick(G.info.routes.ring, 4), coulees: G.info.routes.coulees.map((c) => pick(c, 2)), plazas: G.info.plazas.map((p) => ({ id: p.id, x: p.x, z: p.z, y: p.y, tx: p.tx, tz: p.tz, sx: p.sx, sz: p.sz, rx: p.rx, rz: p.rz })), couleesFace: G.info.routes.coulees.map((c, ci) => c.filter((_, i) => i % 2 === 0).map((p, i, a) => { if (ci > 0) return { x: p.x, z: p.z, y: p.y, nopush: true }; const q = a[Math.min(a.length - 1, i + 1)], o = a[Math.max(0, i - 1)]; let tx = q.x - o.x, tz = q.z - o.z; const l = Math.hypot(tx, tz) || 1; tx /= l; tz /= l; return { x: p.x - tz * 5.5, z: p.z + tx * 5.5, y: p.y - 4 }; })) };
   },
   bot(opts) { G.bot = opts ? new Bot({ yaw: G.yaw, ...opts }) : null; G.botExtra = opts && opts.extra || null; return !!G.bot; },
   botSet(o) { if (G.bot) Object.assign(G.bot, o); if (o.extra !== undefined) G.botExtra = o.extra; },
@@ -557,7 +696,18 @@ Object.assign(window.__velocity, {
   ground(x, z) { return G.terrain.heightAt(x, z); },
   penetrationAt(x, y, z) { return G.col.penetration({ x, y, z }, G.player.r - 0.02); },
   inspect() { G.vm.startInspect(); G.inspectCount++; },
-  inspectAt(t) { const I = G.vm.inspect; if (t === null) { I.hold = false; I.active = false; return; } I.active = true; I.t = t; I.hold = true; I.events = t > 1.6 ? 2 : 0; },
+  inspectAt(t, variant = null) { G.vm.setInspect(t, variant); },
+  setPose(name, p, F, B) { G.vm.setPose(name, p, F, B); },
+  rewind: () => rewind(),
+  snapshots: () => G.snaps.length,
+  lastRewind: () => G.lastRewind || null,
+  phys: () => ({ ...PHYS }),
+  setPreset: (n) => setPreset(n),
+  openTuner: () => openTuner(),
+  syncInfo: () => ({ live: { ...G.sync }, last: G.syncLast }),
+  vmPose: () => ({ p: G.vm.right.position.toArray(), q: G.vm.right.quaternion.toArray(), k: G.vm.knife.matrix.elements.slice(12, 15), spin: G.vm.state.spin, fingers: G.vm.rig.fingers.m[0].rotation.x }),
+  vmInfo: () => ({ fidgets: G.vm.fidget.count, fidget: G.vm.fidget.clip && G.vm.fidget.clip.name, inspect: G.vm.inspect.clip && G.vm.inspect.clip.name, spin: G.vm.state.spin, toss: G.vm.state.toss }),
+  fidgetsOff(on = true) { G.vm.fidget.timer = on ? 1e9 : 0.5; G.vm.fidget.clip = null; },
   pause, resume: () => startPlay(false), play: () => startPlay(true),
   frameStats() { const a = [...G.frameMs].sort((x, y) => x - y); return { fps: G.fps, p50: a[Math.floor(a.length * 0.5)], p95: a[Math.floor(a.length * 0.95)] }; },
 });

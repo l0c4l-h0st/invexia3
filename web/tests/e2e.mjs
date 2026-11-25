@@ -13,6 +13,7 @@ const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
 const browser = await chromium.launch({ args: ['--enable-unsafe-swiftshader', '--ignore-gpu-blocklist'] });
 const page = await browser.newPage({ viewport: { width: 640, height: 360 } });
+page.setDefaultTimeout(180000);
 const errors = [];
 page.on('pageerror', (e) => errors.push(e.message));
 page.on('console', (m) => { if (m.type() === 'error') errors.push(m.text()); });
@@ -48,6 +49,66 @@ s = await st();
 await page.screenshot({ path: `${SHOT}/02-rebonds-viaduc.png` });
 check('Au moins 5 rebonds enchaînés (touches réelles W/Z + Espace maintenus, 6 s de jeu)', s.stats.maxChain >= 5, { rebonds: s.stats.bhops - before.bhops, chaineMax: s.stats.maxChain, sauts: s.stats.jumps - before.jumps, secteur: s.sector });
 
+// ---------- 2b. karambit vivant, gestes spontanés, trois inspections à figures ----------
+{
+  await V(() => { const v = window.__velocity; const sp = v.G.info.spawn; v.teleport(sp.x, sp.y, sp.z, 0); });
+  const f0 = (await V(() => window.__velocity.vmInfo())).fidgets;
+  const samples = [];
+  for (let k = 0; k < 12; k++) { await waitGame(0.25); samples.push(await V(() => window.__velocity.vmPose())); }
+  const spread = (sel) => { const vals = samples.map(sel); return Math.max(...vals) - Math.min(...vals); };
+  const moveP = Math.max(spread((x) => x.p[0]), spread((x) => x.p[1]), spread((x) => x.p[2]));
+  const moveQ = Math.max(spread((x) => x.q[0]), spread((x) => x.q[1]), spread((x) => x.q[2]));
+  await waitGame(6);
+  const f1 = (await V(() => window.__velocity.vmInfo())).fidgets;
+  check('Le karambit bouge en permanence (immobile, sans toucher aux commandes)', moveP > 0.002 && moveQ > 0.01 && f1 - f0 >= 2, { amplitudePosition_mm: +(moveP * 1000).toFixed(1), amplitudeRotation_quat: +moveQ.toFixed(3), gestesSpontanes_en9s: f1 - f0 });
+  const seen = [];
+  for (let k = 0; k < 3; k++) {
+    await page.keyboard.press('KeyF');
+    let name = null, maxSpin = 0, maxToss = 0, minSpin = 0;
+    for (let j = 0; j < 60; j++) {
+      await waitGame(0.1);
+      const vi = await V(() => window.__velocity.vmInfo());
+      if (vi.inspect && !name) name = vi.inspect;
+      maxSpin = Math.max(maxSpin, vi.spin); minSpin = Math.min(minSpin, vi.spin); maxToss = Math.max(maxToss, vi.toss);
+      if (!(await st()).inspect.active && j > 5) break;
+    }
+    seen.push({ figure: name, toursMax: +((maxSpin - minSpin) / (2 * Math.PI)).toFixed(2), lancer: maxToss > 0.3 });
+    if (k === 1) await page.screenshot({ path: `${SHOT}/02b-inspection-lancer.png` });
+  }
+  const names = new Set(seen.map((x) => x.figure));
+  check('Trois inspections à figures différentes (touche F)', names.size === 3 && seen.every((x) => x.toursMax >= 1) && seen.some((x) => x.lancer), seen);
+}
+
+// ---------- 2c. jauge de sync, retour à l'élan (R), panneau F1 ----------
+{
+  await V(() => { const v = window.__velocity, r = v.routes(); const sp = v.G.info.spawn; v.teleport(sp.x, sp.y, sp.z, Math.PI / 4); v.bot({ route: [{ x: -26, z: -26 }, ...r.viaduc.slice(2)], maxTurnDeg: 300 }); });
+  await waitGame(14);
+  const sy = await V(() => window.__velocity.syncInfo());
+  const syncText = await V(() => document.getElementById('sync').textContent);
+  const sw = await V(() => window.__velocity.G.bot.switches);
+  check('Jauge de synchronisation du strafe (pilote : touche tenue ≥ 0,18 s, souris ≤ 300°/s)', !!sy.last && sy.last.pct >= 70 && syncText.includes('sync'), { dernierSaut: sy.last, affichage: syncText, changementsDeTouche: sw });
+  // R pendant que le pilote roule : le jeu enregistre l'état exact avant / après le rembobinage
+  await page.keyboard.press('KeyR');
+  await waitGame(0.3);
+  const rw = await V(() => window.__velocity.lastRewind());
+  await V(() => window.__velocity.bot(null));
+  const ok = !!rw && rw.seconds > 2.5 && rw.seconds < 4 && rw.to.speed > 0.6 * rw.from.speed && Math.hypot(rw.to.x - rw.from.x, rw.to.z - rw.from.z) > 40;
+  check('R : retour à l’élan (≈3 s en arrière, vitesse conservée)', ok, rw && { vitesseAuMomentDeR: +rw.from.speed.toFixed(1), vitesseRestauree: +rw.to.speed.toFixed(1), secondesRembobinees: +rw.seconds.toFixed(2), reculMetres: +Math.hypot(rw.to.x - rw.from.x, rw.to.z - rw.from.z).toFixed(0) });
+  await page.keyboard.press('F1');
+  await sleep(1200);
+  const t1 = await st();
+  const tunerShown = await V(() => !document.getElementById('tuner').hidden);
+  await page.click('[data-preset="arcade"]');
+  const pa = await V(() => window.__velocity.phys());
+  await page.click('[data-preset="standard"]');
+  const ps = await V(() => window.__velocity.phys());
+  const perf = await V(() => document.getElementById('perf').textContent);
+  await page.keyboard.press('F1');
+  await sleep(1500);
+  const t2 = await st();
+  check('F1 : panneau de physique (pause, préréglages appliqués en direct, images/s)', t1.state === 'paused' && tunerShown && pa.airWishCap === 2.8 && ps.airWishCap === 2.4 && t2.state === 'playing', { etatOuvert: t1.state, arcade: { airAccel: pa.airAccel, airWishCap: pa.airWishCap }, standard: { airAccel: ps.airAccel, airWishCap: ps.airWishCap }, mesures: perf, etatApresF1: t2.state });
+}
+
 // ---------- 3. ligne rapide : Belvédère → Grand Viaduc → Darse → Boucle ----------
 await V(() => { const v = window.__velocity; const sp = v.G.info.spawn; v.teleport(sp.x, sp.y, sp.z, Math.PI / 4); });
 await sleep(500);
@@ -82,7 +143,7 @@ while (Date.now() - runStart < 420000) {
     await waitGame(1.0);
     const mid2 = await st();
     await page.screenshot({ path: `${SHOT}/04b-inspection-face-b.png` });
-    await waitGame(2.0);
+    for (let k = 0; k < 40 && (await st()).inspect.active; k++) await waitGame(0.25);
     const post = await st();
     inspected = { vitesseAvant: +pre.hspeed.toFixed(1), vitessePendant: +mid2.hspeed.toFixed(1), vitesseApres: +post.hspeed.toFixed(1), poidsPendant: +mid.inspect.weight.toFixed(2), actifPendant: mid.inspect.active, tempsInspect: +mid2.inspect.t.toFixed(2), distanceParcourue: +Math.hypot(post.pos.x - pre.pos.x, post.pos.z - pre.pos.z).toFixed(0), finie: !post.inspect.active, enLair: !mid.onGround };
   }

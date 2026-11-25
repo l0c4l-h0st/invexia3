@@ -27,6 +27,18 @@ html, body { height: 100%; margin: 0; background: #0f1012; color: var(--ink); fo
 #speedo .bar { width: 220px; height: 3px; background: rgba(255,255,255,0.14); position: relative; overflow: hidden; border-radius: 2px; }
 #speedo .bar i { position: absolute; left: 0; top: 0; bottom: 0; width: 0; background: var(--orange); transition: background 0.3s; }
 #speedo .flags { height: 16px; display: flex; gap: 6px; }
+#speedo .sync { font-size: 12px; letter-spacing: 0.06em; color: var(--muted); font-variant-numeric: tabular-nums; min-height: 16px; }
+#speedo .sync b { font-weight: 700; color: var(--ash); }
+#speedo .sync b.good { color: var(--ok); } #speedo .sync b.mid { color: var(--ember); } #speedo .sync b.low { color: #d0796a; }
+#fps { position: absolute; right: max(14px, env(safe-area-inset-right, 0px)); top: max(10px, env(safe-area-inset-top, 0px)); font-size: 11px; color: var(--muted); font-variant-numeric: tabular-nums; letter-spacing: 0.04em; text-shadow: 0 1px 2px rgba(0,0,0,0.7); }
+.tuner .col { width: min(620px, 100%); }
+.tuner .perf { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; max-width: 520px; }
+.tuner .perf div { border-left: 2px solid var(--line); padding-left: 8px; }
+.tuner .perf b { display: block; font-family: var(--display); font-weight: 800; font-size: 26px; color: var(--ink); font-variant-numeric: tabular-nums; }
+.tuner .perf span { font-size: 11px; color: var(--muted); letter-spacing: 0.08em; text-transform: uppercase; }
+.preset { pointer-events: auto; appearance: none; cursor: pointer; font-family: var(--body); font-weight: 700; font-size: 13px; letter-spacing: 0.06em; color: var(--ink); background: rgba(255,255,255,0.05); border: 1px solid var(--line); padding: 6px 12px; }
+.preset.on { border-color: var(--orange); color: var(--ember); }
+.preset:focus-visible { outline: 2px solid var(--orange); outline-offset: 2px; }
 #speedo .flags span { font-size: 11px; font-weight: 700; letter-spacing: 0.14em; padding: 1px 6px; border: 1px solid var(--line); color: var(--ember); background: rgba(0,0,0,0.25); }
 #sector { position: absolute; left: max(24px, env(safe-area-inset-left, 0px)); top: max(22px, env(safe-area-inset-top, 0px)); text-shadow: 0 1px 3px rgba(0,0,0,0.7); transition: opacity 0.6s; }
 #sector .name { font-family: var(--display); font-weight: 800; font-size: 30px; letter-spacing: 0.04em; text-transform: uppercase; }
@@ -104,7 +116,9 @@ html, body { height: 100%; margin: 0; background: #0f1012; color: var(--ink); fo
       <div class="row"><span class="v" id="spd">0</span><span class="u">m/s</span></div>
       <div class="kmh" id="kmh">0 km/h</div>
       <div class="bar"><i id="spdbar"></i></div>
+      <div class="sync" id="sync"></div>
     </div>
+    <div id="fps" hidden></div>
     <div id="help" hidden>
       <h3>Premier départ</h3>
       <ul>
@@ -113,7 +127,8 @@ html, body { height: 100%; margin: 0; background: #0f1012; color: var(--ink); fo
         <li data-k="strafe"><b>En l'air</b>Q/A ou D + tourner la souris du même côté = accélérer</li>
         <li data-k="surf"><b>Pentes orange</b>surf : strafe vers la rampe</li>
         <li data-k="brake"><b>Ctrl</b>freiner · C : glissade / plongeon</li>
-        <li data-k="inspect"><b>F</b>inspecter le couteau · Échap : pause</li>
+        <li data-k="inspect"><b>F</b>figures au karambit · Échap : pause</li>
+        <li data-k="rewind"><b>R</b>retour à l'élan (3 s en arrière, vitesse gardée)</li>
       </ul>
       <div class="foot">Devant vous : Hauts-Fourneaux à droite (surf), Docks à gauche (viaduc). Aucune course imposée.</div>
     </div>
@@ -135,7 +150,9 @@ html, body { height: 100%; margin: 0; background: #0f1012; color: var(--ink); fo
         <kbd>Souris + Q/D</kbd><span>strafe en l'air : gagner de la vitesse</span>
         <kbd>Ctrl</kbd><span>frein</span>
         <kbd>C</kbd><span>glissade au sol, plongeon en l'air</span>
-        <kbd>F</kbd><span>inspecter le couteau</span>
+        <kbd>F</kbd><span>figures au karambit</span>
+        <kbd>R</kbd><span>retour à l'élan (3 s en arrière)</span>
+        <kbd>F1</kbd><span>réglages de physique et images/s</span>
         <kbd>Échap</kbd><span>pause et réglages</span>
       </div>
       <p class="note" id="titlenote">Ordinateur de bureau, clavier et souris. Le jeu verrouille la souris au clic.</p>
@@ -171,7 +188,26 @@ html, body { height: 100%; margin: 0; background: #0f1012; color: var(--ink); fo
         <button class="btn small" id="act-boucle">Tour de la Boucle</button>
         <button class="btn small" id="act-stop" hidden>Arrêter le défi</button>
       </div>
+      <p class="note">Touches : <strong>R</strong> retour à l'élan · <strong>F1</strong> réglages de physique.</p>
       <p class="note"><strong>Limite technique : 400 m/s (1 440 km/h).</strong> Au-delà, la vitesse est plafonnée. Le frein (Ctrl) agit au sol comme en l'air. Ctrl + W peut fermer l'onglet dans certains navigateurs : le jeu demande confirmation avant de quitter, et le plein écran capture ce raccourci quand le navigateur le permet.</p>
+    </div>
+  </div>
+
+  <div class="screen tuner" id="tuner" hidden>
+    <div class="col">
+      <div class="brand"><div class="eyebrow">F1 · Réglages de jeu</div><h1 style="font-size:56px">Physique</h1></div>
+      <div class="perf" id="perf"></div>
+      <div class="section">Préréglages</div>
+      <div class="row2" id="presets">
+        <button class="preset" data-preset="arcade">Arcade</button>
+        <button class="preset" data-preset="standard">Standard</button>
+        <button class="preset" data-preset="source">Source classique</button>
+      </div>
+      <p class="note" id="presetnote"></p>
+      <div class="section">Réglage fin (appliqué en direct)</div>
+      <div class="settings" id="physsliders"></div>
+      <label class="set">Compteur d'images <input type="checkbox" id="s-fps"><span></span></label>
+      <div><button class="btn primary" id="tuner-close">Reprendre (F1)</button></div>
     </div>
   </div>
 </div>

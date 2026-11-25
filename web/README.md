@@ -1,4 +1,4 @@
-# Velocity FPS — Friche Ardente (v2)
+# Velocity FPS — Friche Ardente (v2.1)
 
 Balade libre à très haute vitesse dans une friche industrielle, jouable dans un navigateur de bureau.
 Aucun moteur à installer : `index.html` (à la racine du dépôt) et `web/dist/velocity-fps.html` sont des
@@ -18,11 +18,26 @@ Ouvrir `index.html` (ou `web/dist/velocity-fps.html`) dans Chrome, Edge ou Firef
 | Q/A ou D en l'air + rotation de la souris du même côté | strafe : gain de vitesse |
 | Ctrl | frein volontaire (au sol et en l'air) |
 | C | glissade au sol (en sprint), plongeon en l'air |
-| F | inspecter le couteau (fonctionne en plein saut, sans bloquer les commandes) |
+| F | figures au karambit : trois enchaînements à tour de rôle (vitrine et double tour, lancer-rattraper, tourbillon et estoc), en plein saut sans bloquer les commandes |
+| R | retour à l'élan : ≈3 s en arrière sur un appui stable, vitesse conservée (appuis rapprochés = plus loin) |
+| F1 | réglages de physique en direct (préréglages Arcade, Standard, Source classique) et images/s |
 | Échap | pause et réglages |
 | H | afficher / masquer l'aide |
 
 **Limite technique : 400 m/s (1 440 km/h).** La vitesse est plafonnée au-delà.
+
+Sous le compteur de vitesse, la **jauge de synchronisation** indique pendant chaque saut la part du temps
+où la souris tourne du même côté que la touche de strafe, et le gain de vitesse du dernier saut.
+
+## Le karambit « KR-9 Serre »
+
+Lame en griffe à double émouture (face A stonewash gravée, face B aux couleurs de revenu, biseaux polis
+miroir), anneau DLC à liseré orange, plaquettes G10 quadrillées sur soie apparente, axes en acier.
+Il est tenu index dans l'anneau par une main gantée articulée (trois phalanges par doigt).
+La main ne s'arrête jamais : respiration, roulis, bascule du couteau sur l'index, et toutes les 2 à 4 s
+un geste spontané (tour complet, double tour, tour inversé, balancier, claquement de poignet).
+Les rotations font s'ouvrir les doigts, le poignet réagit à l'accélération du couteau et une traînée
+lumineuse suit la pointe.
 
 ## Ce qu'il y a dans la friche
 
@@ -71,7 +86,7 @@ Arborescence :
 Modèle Source/Quake : friction au sol, accélération au sol, accélération en l'air plafonnée (le strafe
 synchronisé avec la souris fait gagner de la vitesse), surf sur toute pente de plus de 45,6°.
 Réglages principaux (`src/core/config.js`) : gravité 20 m/s², saut 7,2 m/s, `airAccel` 40,
-plafond de strafe 2 m/s, friction au sol plafonnée à 45 m/s² (une réception sans saut fait déraper au lieu
+plafond de strafe 2,4 m/s, friction au sol plafonnée à 45 m/s² (une réception sans saut fait déraper au lieu
 d'arrêter net), frein jusqu'à ≈ 7,6 g au sol et 6 g en l'air.
 Les collisions sont des tracés continus : aucune traversée possible à 400 m/s (3,3 m par pas).
 Les jointures entre segments d'une même rampe ne bloquent jamais (pas de « ramp bug »).

@@ -14,7 +14,7 @@ export const PHYS = {
   stopSpeed: 2.5,
   airAccel: 40,         // sv_airaccelerate (style serveurs surf)
   airRefSpeed: 8.6,     // vitesse de référence pour le taux d'accélération en l'air
-  airWishCap: 2.0,      // plafond « 30 u/s » de Source, ajusté pour la très haute vitesse
+  airWishCap: 2.4,      // plafond « 30 u/s » de Source, ajusté pour la très haute vitesse
   maxSpeed: 400,        // LIMITE TECHNIQUE (m/s) = 1440 km/h
   radius: 0.7,          // sphère de collision
   eyeHeight: 0.95,      // œil au-dessus du centre de la sphère (≈1,65 m du sol)
