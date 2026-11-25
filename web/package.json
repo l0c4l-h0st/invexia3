@@ -1,0 +1,20 @@
+{
+  "name": "velocity-fps",
+  "version": "2.0.0",
+  "private": true,
+  "description": "Velocity FPS — balade libre à très haute vitesse dans une friche industrielle (navigateur).",
+  "type": "module",
+  "scripts": {
+    "build": "node build.mjs",
+    "sim": "node tools/sim.mjs",
+    "world": "node tools/worldcheck.mjs",
+    "test": "node tests/e2e.mjs && node tests/moves.mjs",
+    "showcase": "node tests/showcase.mjs"
+  },
+  "dependencies": {
+    "three": "0.160.0"
+  },
+  "devDependencies": {
+    "esbuild": "0.20.2"
+  }
+}

@@ -1,0 +1,177 @@
+<title>Velocity FPS</title>
+<meta name="description" content="Velocity FPS — balade libre à très haute vitesse dans une friche industrielle. Bunny hop, surf, glissade, couteau à inspecter.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&family=Big+Shoulders+Display:wght@600;800;900&display=swap">
+<style>
+/* Mise en page : jeu plein écran, HUD minimal aux bords, menus en panneaux graphite à gauche. */
+:root {
+  --ink: #f2eee8; --ash: #b9b2a9; --muted: #857e76;
+  --graphite: #16171a; --panel: rgba(20, 21, 24, 0.86); --line: rgba(242, 238, 232, 0.14);
+  --orange: #f06a1c; --ember: #ffb15a; --ok: #8fd18a;
+  --display: "Big Shoulders Display", "Arial Narrow", "Roboto Condensed", Arial, sans-serif;
+  --body: "Barlow", "Segoe UI", Roboto, Arial, sans-serif;
+  color-scheme: dark;
+}
+[hidden] { display: none !important; }
+html, body { height: 100%; margin: 0; background: #0f1012; color: var(--ink); font-family: var(--body); overflow: hidden; }
+#app { position: fixed; inset: 0; user-select: none; -webkit-user-select: none; }
+#view { position: absolute; inset: 0; width: 100%; height: 100%; display: block; background: #2a2523; }
+.hud { position: absolute; inset: 0; pointer-events: none; }
+#crosshair { position: absolute; left: 50%; top: 50%; width: 4px; height: 4px; margin: -2px 0 0 -2px; border-radius: 50%; background: var(--ink); box-shadow: 0 0 0 1px rgba(0,0,0,0.5); opacity: 0.85; }
+#speedo { position: absolute; left: 50%; bottom: max(26px, env(safe-area-inset-bottom, 0px)); transform: translateX(-50%); display: grid; justify-items: center; gap: 2px; text-shadow: 0 1px 2px rgba(0,0,0,0.6); }
+#speedo .row { display: flex; align-items: baseline; gap: 6px; }
+#speedo .v { font-family: var(--display); font-weight: 800; font-size: 54px; line-height: 0.9; letter-spacing: 0.01em; min-width: 3.2ch; text-align: right; font-variant-numeric: tabular-nums; }
+#speedo .u { font-family: var(--display); font-weight: 600; font-size: 18px; color: var(--ash); letter-spacing: 0.08em; }
+#speedo .kmh { font-size: 13px; color: var(--ash); font-variant-numeric: tabular-nums; letter-spacing: 0.04em; }
+#speedo .bar { width: 220px; height: 3px; background: rgba(255,255,255,0.14); position: relative; overflow: hidden; border-radius: 2px; }
+#speedo .bar i { position: absolute; left: 0; top: 0; bottom: 0; width: 0; background: var(--orange); transition: background 0.3s; }
+#speedo .flags { height: 16px; display: flex; gap: 6px; }
+#speedo .flags span { font-size: 11px; font-weight: 700; letter-spacing: 0.14em; padding: 1px 6px; border: 1px solid var(--line); color: var(--ember); background: rgba(0,0,0,0.25); }
+#sector { position: absolute; left: max(24px, env(safe-area-inset-left, 0px)); top: max(22px, env(safe-area-inset-top, 0px)); text-shadow: 0 1px 3px rgba(0,0,0,0.7); transition: opacity 0.6s; }
+#sector .name { font-family: var(--display); font-weight: 800; font-size: 30px; letter-spacing: 0.04em; text-transform: uppercase; }
+#sector .name::before { content: ""; display: inline-block; width: 10px; height: 10px; background: var(--orange); margin-right: 10px; transform: translateY(-3px) skewX(-18deg); }
+#sector .sub { font-size: 13px; color: var(--ash); letter-spacing: 0.06em; margin-left: 20px; }
+#sector.dim { opacity: 0.5; }
+#compass { position: absolute; left: 50%; top: max(16px, env(safe-area-inset-top, 0px)); width: 420px; height: 30px; transform: translateX(-50%); overflow: hidden; -webkit-mask-image: linear-gradient(90deg, transparent, #000 18%, #000 82%, transparent); mask-image: linear-gradient(90deg, transparent, #000 18%, #000 82%, transparent); }
+#compass .t { position: absolute; top: 0; transform: translateX(-50%); font-size: 11px; font-weight: 700; color: var(--ash); letter-spacing: 0.1em; white-space: nowrap; }
+#compass .m { position: absolute; top: 13px; transform: translateX(-50%); font-size: 11px; font-weight: 600; color: var(--ember); white-space: nowrap; }
+#compass .m::before { content: "▾ "; color: var(--orange); }
+#compass .c { position: absolute; left: 50%; top: 0; width: 1px; height: 10px; background: var(--ink); }
+#chrono { position: absolute; left: 50%; top: 52px; transform: translateX(-50%); font-family: var(--display); font-weight: 800; font-size: 24px; letter-spacing: 0.05em; color: var(--ember); text-shadow: 0 1px 3px rgba(0,0,0,0.7); font-variant-numeric: tabular-nums; }
+#help { position: absolute; right: max(20px, env(safe-area-inset-right, 0px)); top: max(64px, env(safe-area-inset-top, 0px)); width: min(310px, 34vw); background: var(--panel); border-left: 3px solid var(--orange); padding: 10px 12px; font-size: 12.5px; line-height: 1.4; transition: opacity 0.8s; }
+#help h3 { margin: 0 0 6px; font-family: var(--display); font-weight: 800; font-size: 17px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ember); }
+#help ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 3px; }
+#help li { display: grid; grid-template-columns: minmax(0, 104px) minmax(0, 1fr); gap: 8px; color: var(--ash); }
+#help li b { color: var(--ink); font-weight: 600; }
+#help li.done { color: var(--ok); }
+#help li.done b { color: var(--ok); }
+#help .foot { margin-top: 8px; font-size: 11px; color: var(--muted); }
+#toast { position: absolute; left: 50%; top: 34%; transform: translateX(-50%); font-family: var(--display); font-weight: 800; font-size: 22px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink); text-shadow: 0 2px 6px rgba(0,0,0,0.8); opacity: 0; transition: opacity 0.4s; text-align: center; }
+#toast.on { opacity: 1; }
+#toast small { display: block; font-family: var(--body); font-size: 13px; font-weight: 500; letter-spacing: 0.05em; text-transform: none; color: var(--ash); }
+
+.screen { position: absolute; inset: 0; display: flex; align-items: stretch; background: linear-gradient(90deg, rgba(14,15,17,0.92) 0%, rgba(14,15,17,0.78) 38%, rgba(14,15,17,0.15) 70%, rgba(14,15,17,0) 100%); }
+.screen .col { width: min(560px, 100%); padding-block: max(40px, env(safe-area-inset-top, 0px)) 32px; padding-left: max(48px, env(safe-area-inset-left, 0px)); padding-right: 24px; display: flex; flex-direction: column; gap: 18px; overflow-y: auto; }
+.brand { display: grid; gap: 4px; }
+.brand .eyebrow { font-size: 12px; font-weight: 700; letter-spacing: 0.32em; color: var(--orange); text-transform: uppercase; }
+.brand h1 { margin: 0; font-family: var(--display); font-weight: 900; font-size: clamp(56px, 9vw, 104px); line-height: 0.82; letter-spacing: 0.01em; text-transform: uppercase; }
+.brand h1 em { font-style: normal; color: var(--orange); }
+.brand p { margin: 8px 0 0; max-width: 46ch; color: var(--ash); font-size: 15px; line-height: 1.5; text-wrap: pretty; }
+.btn { pointer-events: auto; appearance: none; border: 0; cursor: pointer; text-align: left; font-family: var(--display); font-weight: 800; font-size: 26px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink); background: transparent; padding: 6px 0; display: flex; align-items: center; gap: 12px; }
+.btn::before { content: ""; width: 18px; height: 3px; background: var(--muted); transition: width 0.2s, background 0.2s; }
+.btn:hover::before, .btn:focus-visible::before { width: 34px; background: var(--orange); }
+.btn.primary { font-size: 34px; }
+.btn.primary::before { background: var(--orange); width: 34px; }
+.btn:focus-visible { outline: 2px solid var(--orange); outline-offset: 4px; }
+.btn[disabled] { opacity: 0.4; cursor: default; }
+.btn.small { font-size: 18px; }
+.load { display: grid; gap: 6px; max-width: 340px; }
+.load .bar { height: 3px; background: rgba(255,255,255,0.12); }
+.load .bar i { display: block; height: 100%; width: 0; background: var(--orange); transition: width 0.2s; }
+.load .msg { font-size: 12px; color: var(--muted); letter-spacing: 0.06em; }
+.keys { display: grid; grid-template-columns: auto 1fr; gap: 4px 14px; font-size: 13px; color: var(--ash); max-width: 440px; }
+.keys kbd { font-family: var(--body); font-weight: 700; color: var(--ink); font-size: 12px; letter-spacing: 0.04em; border: 1px solid var(--line); padding: 1px 6px; background: rgba(255,255,255,0.04); white-space: nowrap; }
+.section { font-size: 12px; font-weight: 700; letter-spacing: 0.24em; color: var(--orange); text-transform: uppercase; border-top: 1px solid var(--line); padding-top: 14px; }
+.settings { display: grid; gap: 10px; max-width: 440px; }
+.set { display: grid; grid-template-columns: 150px 1fr 48px; align-items: center; gap: 10px; font-size: 13px; color: var(--ash); pointer-events: auto; }
+.set output { font-variant-numeric: tabular-nums; color: var(--ink); text-align: right; }
+.set input[type=range] { width: 100%; accent-color: var(--orange); }
+.set select { background: #222428; color: var(--ink); border: 1px solid var(--line); padding: 3px; font-family: var(--body); }
+.set input[type=checkbox] { accent-color: var(--orange); width: 16px; height: 16px; justify-self: start; }
+.stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; max-width: 440px; }
+.stats div { border-left: 2px solid var(--line); padding-left: 8px; }
+.stats b { display: block; font-family: var(--display); font-weight: 800; font-size: 24px; color: var(--ink); font-variant-numeric: tabular-nums; }
+.stats span { font-size: 11px; color: var(--muted); letter-spacing: 0.08em; text-transform: uppercase; }
+.note { font-size: 12px; color: var(--muted); max-width: 46ch; line-height: 1.5; }
+.note strong { color: var(--ash); font-weight: 600; }
+.warn { color: var(--ember); font-size: 13px; }
+.row2 { display: flex; flex-wrap: wrap; gap: 4px 22px; }
+@media (max-width: 900px) { #help { font-size: 11px; width: min(260px, 42vw); } #help li { grid-template-columns: minmax(0, 1fr); gap: 0; } #help .foot { display: none; } }
+@media (max-width: 700px) { .screen .col { padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); } #compass { width: 260px; } .set { grid-template-columns: 110px 1fr 40px; } }
+@media (prefers-reduced-motion: reduce) { .btn::before, #toast, #help, #sector { transition: none; } }
+</style>
+
+<div id="app">
+  <canvas id="view"></canvas>
+  <div class="hud" id="hud" hidden>
+    <div id="crosshair"></div>
+    <div id="compass"><div class="c"></div></div>
+    <div id="sector"><div class="name">Le Belvédère</div><div class="sub"></div></div>
+    <div id="chrono" hidden></div>
+    <div id="speedo">
+      <div class="flags" id="flags"></div>
+      <div class="row"><span class="v" id="spd">0</span><span class="u">m/s</span></div>
+      <div class="kmh" id="kmh">0 km/h</div>
+      <div class="bar"><i id="spdbar"></i></div>
+    </div>
+    <div id="help" hidden>
+      <h3>Premier départ</h3>
+      <ul>
+        <li data-k="move"><b>ZQSD / WASD</b>se déplacer · Maj : sprint</li>
+        <li data-k="hop"><b>Espace maintenu</b>rebonds automatiques (bunny hop)</li>
+        <li data-k="strafe"><b>En l'air</b>Q/A ou D + tourner la souris du même côté = accélérer</li>
+        <li data-k="surf"><b>Pentes orange</b>surf : strafe vers la rampe</li>
+        <li data-k="brake"><b>Ctrl</b>freiner · C : glissade / plongeon</li>
+        <li data-k="inspect"><b>F</b>inspecter le couteau · Échap : pause</li>
+      </ul>
+      <div class="foot">Devant vous : Hauts-Fourneaux à droite (surf), Docks à gauche (viaduc). Aucune course imposée.</div>
+    </div>
+    <div id="toast"></div>
+  </div>
+
+  <div class="screen" id="title">
+    <div class="col">
+      <div class="brand">
+        <div class="eyebrow">Friche Ardente · v2</div>
+        <h1>Velo<em>/</em>city</h1>
+        <p>Une balade libre à très haute vitesse dans une friche industrielle : bunny hop, surf sur les rampes orange, glissades. Pas de chrono imposé, pas d'ennemi. Juste la ligne que vous choisissez.</p>
+      </div>
+      <div class="load" id="load"><div class="bar"><i id="loadbar"></i></div><div class="msg" id="loadmsg">Préparation…</div></div>
+      <button class="btn primary" id="play" disabled>Jouer</button>
+      <div class="keys">
+        <kbd>ZQSD / WASD</kbd><span>se déplacer (Maj : sprint)</span>
+        <kbd>Espace</kbd><span>maintenu : bunny hop automatique</span>
+        <kbd>Souris + Q/D</kbd><span>strafe en l'air : gagner de la vitesse</span>
+        <kbd>Ctrl</kbd><span>frein</span>
+        <kbd>C</kbd><span>glissade au sol, plongeon en l'air</span>
+        <kbd>F</kbd><span>inspecter le couteau</span>
+        <kbd>Échap</kbd><span>pause et réglages</span>
+      </div>
+      <p class="note" id="titlenote">Ordinateur de bureau, clavier et souris. Le jeu verrouille la souris au clic.</p>
+    </div>
+  </div>
+
+  <div class="screen" id="pause" hidden>
+    <div class="col">
+      <div class="brand"><div class="eyebrow">Pause</div><h1 style="font-size:64px">Velo<em>/</em>city</h1></div>
+      <div>
+        <button class="btn primary" id="resume">Reprendre</button>
+        <div class="warn" id="lockwarn" hidden></div>
+        <button class="btn small" id="respawn">Revenir au Belvédère</button>
+        <button class="btn small" id="fullscreen">Plein écran</button>
+      </div>
+      <div class="stats" id="stats"></div>
+      <div class="section">Réglages</div>
+      <div class="settings">
+        <label class="set">Sensibilité <input type="range" id="s-sens" min="0.2" max="5" step="0.05"><output id="o-sens"></output></label>
+        <label class="set">Champ de vision <input type="range" id="s-fov" min="80" max="120" step="1"><output id="o-fov"></output></label>
+        <label class="set">Secousses <input type="range" id="s-shake" min="0" max="1" step="0.05"><output id="o-shake"></output></label>
+        <label class="set">Balancement <input type="range" id="s-bob" min="0" max="1" step="0.05"><output id="o-bob"></output></label>
+        <label class="set">Volume <input type="range" id="s-vol" min="0" max="1" step="0.05"><output id="o-vol"></output></label>
+        <label class="set">FOV dynamique <input type="checkbox" id="s-dfov"><span></span></label>
+        <label class="set">Lignes de vitesse <input type="checkbox" id="s-lines"><span></span></label>
+        <label class="set">Inverser l'axe Y <input type="checkbox" id="s-inv"><span></span></label>
+        <label class="set">Aide au départ <input type="checkbox" id="s-help"><span></span></label>
+        <label class="set">Qualité <select id="s-q"><option value="auto">Auto</option><option value="low">Basse</option><option value="medium">Moyenne</option><option value="high">Haute</option></select><span></span></label>
+      </div>
+      <div class="section">Activités chronométrées (facultatives)</div>
+      <div class="row2">
+        <button class="btn small" id="act-coulees">Défi des Coulées</button>
+        <button class="btn small" id="act-boucle">Tour de la Boucle</button>
+        <button class="btn small" id="act-stop" hidden>Arrêter le défi</button>
+      </div>
+      <p class="note"><strong>Limite technique : 400 m/s (1 440 km/h).</strong> Au-delà, la vitesse est plafonnée. Le frein (Ctrl) agit au sol comme en l'air. Ctrl + W peut fermer l'onglet dans certains navigateurs : le jeu demande confirmation avant de quitter, et le plein écran capture ce raccourci quand le navigateur le permet.</p>
+    </div>
+  </div>
+</div>

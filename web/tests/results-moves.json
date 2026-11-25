@@ -1,0 +1,48 @@
+[
+  {
+    "test": "Sprint (Maj)",
+    "ok": true,
+    "vitesse": 8.6
+  },
+  {
+    "test": "Glissade (C en sprint)",
+    "ok": true,
+    "fromDive": false,
+    "before": 8.6,
+    "after": 11.6,
+    "tick": 450,
+    "slideT": 1.1,
+    "slideTAfter0_5s": 0.6,
+    "hsAfter0_5s": 9.74
+  },
+  {
+    "test": "Plongeon (C en l’air)",
+    "ok": true,
+    "before": {
+      "hs": 8.6,
+      "vy": -3.8000000000000025,
+      "g": false
+    },
+    "after": {
+      "hs": 14.1,
+      "vy": -7.3
+    },
+    "tick": 1110
+  },
+  {
+    "test": "Réception du plongeon en glissade",
+    "ok": true,
+    "glissadesApresPlongeon": 1
+  },
+  {
+    "test": "Secousses réglables jusqu’à zéro (amplitude caméra max à la réception d’une chute de 55 m)",
+    "ok": true,
+    "secousses_0.6": 0.024,
+    "secousses_0": 0
+  },
+  {
+    "test": "Aucune erreur JavaScript",
+    "ok": true,
+    "errors": []
+  }
+]

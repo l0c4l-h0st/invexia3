@@ -1,0 +1,1107 @@
+{
+  "started": "2026-11-25T11:36:29.671Z",
+  "file": "file:///home/user/invexia3/web/dist/velocity-fps.html",
+  "checks": [
+    {
+      "name": "Partie lancée par clic sur « Jouer »",
+      "ok": true,
+      "detail": {
+        "state": "playing",
+        "pointerLock": true,
+        "repliSourisLibre": false,
+        "gpu": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+        "chargementMs": 4904
+      }
+    },
+    {
+      "name": "Au moins 5 rebonds enchaînés (touches réelles W/Z + Espace maintenus, 6 s de jeu)",
+      "ok": true,
+      "detail": {
+        "rebonds": 9,
+        "chaineMax": 9,
+        "sauts": 10,
+        "secteur": "Grand Viaduc"
+      }
+    },
+    {
+      "name": "Plusieurs secteurs franchis à plus de 100 m/s",
+      "ok": true,
+      "detail": {
+        "secteurs": [
+          "Grand Viaduc",
+          "Échangeur de la Darse",
+          "La Boucle"
+        ],
+        "premiers100ms_apres_s": 27.5,
+        "vitesseMax": 128.5,
+        "distanceKm": 3.78,
+        "dureeJeu_s": 43,
+        "rotationVueMax_degParS": 300
+      }
+    },
+    {
+      "name": "Inspection du couteau en plein vol sans bloquer le mouvement",
+      "ok": true,
+      "detail": {
+        "vitesseAvant": 81.4,
+        "vitessePendant": 92.5,
+        "vitesseApres": 100.5,
+        "poidsPendant": 1,
+        "actifPendant": true,
+        "tempsInspect": 3.5,
+        "distanceParcourue": 802,
+        "finie": true,
+        "enLair": true
+      }
+    },
+    {
+      "name": "Frein (Ctrl) : arrêt depuis la vitesse de pointe",
+      "ok": true,
+      "detail": {
+        "vitesseDepart": 129.2,
+        "tempsJeu_s": 1.5,
+        "vitesseFinale": 0,
+        "secteur": "La Boucle"
+      }
+    },
+    {
+      "name": "Demi-tour puis retour sur ses pas dans des lieux déjà traversés",
+      "ok": true,
+      "detail": {
+        "secteurAvant": "La Boucle",
+        "demiTourApres_s": 0.5,
+        "secteursTraverses": [
+          "La Boucle",
+          "Échangeur de la Darse",
+          "Grand Viaduc"
+        ],
+        "reconnus": [
+          "Échangeur de la Darse",
+          "Grand Viaduc"
+        ]
+      }
+    },
+    {
+      "name": "Collision : Gazomètre (cuve r=56 m) à 300 m/s",
+      "ok": true,
+      "detail": {
+        "test": "Gazomètre (cuve r=56 m) à 300 m/s",
+        "distanceAuCentre_m": 62.6,
+        "dehors": true,
+        "penetrationMax_m": 0,
+        "chocs": 1
+      }
+    },
+    {
+      "name": "Collision : Base de haut-fourneau (r=18 m) à 400 m/s",
+      "ok": true,
+      "detail": {
+        "test": "Base de haut-fourneau (r=18 m) à 400 m/s",
+        "distanceAuCentre_m": 61.6,
+        "dehors": true,
+        "penetrationMax_m": 0,
+        "chocs": 3
+      }
+    },
+    {
+      "name": "Collision : Chute verticale à 350 m/s sur le terrain",
+      "ok": true,
+      "detail": {
+        "test": "Chute verticale à 350 m/s sur le terrain",
+        "hauteurAuDessusDuSol_m": 0.99,
+        "auDessus": true,
+        "penetrationMax_m": 0,
+        "chocs": 0
+      }
+    },
+    {
+      "name": "Collision : Berge de la Boucle frôlée à 400 m/s",
+      "ok": true,
+      "detail": {
+        "test": "Berge de la Boucle frôlée à 400 m/s",
+        "altitude": 60.9,
+        "penetrationMax_m": 0,
+        "chocs": 0
+      }
+    },
+    {
+      "name": "Pause (Échap) fige la partie, « Reprendre » la relance",
+      "ok": true,
+      "detail": {
+        "etatApresEchap": "paused",
+        "deplacementPendantPause_m": 0,
+        "etatApresReprise": "playing",
+        "deplacementApresReprise_m": 11.1
+      }
+    },
+    {
+      "name": "Surf des Coulées jusqu’aux Hauts-Fourneaux (pilote auto)",
+      "ok": true,
+      "detail": {
+        "arrive": true,
+        "vitesseMax": 84.5,
+        "secondesAvecContactSurf": 51,
+        "secteur": "Hauts-Fourneaux",
+        "chute": false
+      }
+    },
+    {
+      "name": "Décor chargé à temps (zone du joueur toujours prête)",
+      "ok": true,
+      "detail": {
+        "loads": 127,
+        "unloads": 97,
+        "misses": 0,
+        "lateMs": 0,
+        "buildMs": 546.6000000024214,
+        "maxBuildMs": 67.70000000018626,
+        "loaded": 30,
+        "grace": 0
+      }
+    },
+    {
+      "name": "Aucune traversée de géométrie détectée pendant toute la session",
+      "ok": true,
+      "detail": {
+        "max": 0,
+        "over5cm": 0,
+        "checks": 17280
+      }
+    },
+    {
+      "name": "Aucune erreur JavaScript",
+      "ok": true,
+      "detail": []
+    }
+  ],
+  "loadMs": 4904,
+  "run": {
+    "secondes": 43,
+    "log": [
+      {
+        "t": 0.3,
+        "v": 9.8,
+        "sector": "Le Belvédère",
+        "y": 106,
+        "ground": false,
+        "surf": false
+      },
+      {
+        "t": 0.8,
+        "v": 13.3,
+        "sector": "Le Belvédère",
+        "y": 105.7,
+        "ground": false,
+        "surf": false
+      },
+      {
+        "t": 1.3,
+        "v": 17.1,
+        "sector": "Le Belvédère",
+        "y": 104.7,
+        "ground": true,
+        "surf": false
+      },
+      {
+        "t": 1.8,
+        "v": 20.6,
+        "sector": "Le Belvédère",
+        "y": 105.8,
+        "ground": false,
+        "surf": false
+      },
+      {
+        "t": 2.3,
+        "v": 24.3,
+        "sector": "Le Belvédère",
+        "y": 106,
+        "ground": false,
+        "surf": false
+      },
+      {
+        "t": 2.8,
+        "v": 27.9,
+        "sector": "Grand Viaduc",
+        "y": 105.5,
+        "ground": false,
+        "surf": false
+      },
+      {
+        "t": 3.3,
+        "v": 31.2,
+        "sector": "Grand Viaduc",
+        "y": 105.4,
+        "ground": false,
+        "surf": false
+      },
+      {
+        "t": 3.8,
+        "v": 34.1,
+        "sector": "Grand Viaduc",
+        "y": 106,
+        "ground": false,
+        "surf": false
+      },
+      {
+        "t": 4.3,
+        "v": 36.8,
+        "sector": "Grand Viaduc",
+        "y": 105.3,
+        "ground": false,
+        "surf": false
+      },
+      {
+        "t": 4.8,
+        "v": 39.4,
+        "sector": "Grand Viaduc",
+        "y": 104.8,
+        "ground": false,
+        "surf": false
+      },
+      {
+        "t": 5.3,
+        "v": 41.7,
+        "sector": "Grand Viaduc",
+        "y": 105.3,
+        "ground": false,
+        "surf": false
+      },
+      {
+        "t": 5.8,
+        "v": 43.9,
+        "sector": "Grand Viaduc",
+        "y": 104.2,
+        "ground": false,
+        "surf": false
+      },
+      {
+        "t": 6.3,
+        "v": 46.1,
+        "sector": "Grand Viaduc",
+        "y": 104,
+        "ground": false,
+        "surf": false
+      },
+      {
+        "t": 6.8,
+        "v": 48.1,
+        "sector": "Grand Viaduc",
+        "y": 104.1,
+        "ground": false,
+        "surf": false
+      },
+      {
+        "t": 7.3,
+        "v": 50.1,
+        "sector": "Grand Viaduc",
+        "y": 102.4,
+        "ground": false,
+        "surf": false
+      },
+      {
+        "t": 8,
+        "v": 52.9,
+        "sector": "Grand Viaduc",
+        "y": 101.5,
+        "ground": false,
+        "surf": false
+      },
+      {
+        "t": 8.5,
+        "v": 54.7,
+        "sector": "Grand Viaduc",
+        "y": 102.4,
+        "ground": false,
+        "surf": false
+      },
+      {
+        "t": 9,
+        "v": 56.4,
+        "sector": "Grand Viaduc",
+        "y": 101.3,
+        "ground": false,
+        "surf": false
+      },
+      {
+        "t": 9.5,
+        "v": 58.2,
+        "sector": "Grand Viaduc",
+        "y": 100.7,
+        "ground": false,
+        "surf": false
+      },
+      {
+        "t": 10.3,
+        "v": 60.6,
+        "sector": "Grand Viaduc",
+        "y": 100.1,
+        "ground": false,
+        "surf": false
+      },
+      {
+        "t": 10.8,
+        "v": 62.1,
+        "sector": "Grand Viaduc",
+        "y": 99.4,
+        "ground": false,
+        "surf": false
+      },
+      {
+        "t": 11.3,
+        "v": 63.7,
+        "sector": "Grand Viaduc",
+        "y": 98,
+        "ground": false,
+        "surf": false
+      },
+      {
+        "t": 11.8,
+        "v": 65.1,
+        "sector": "Grand Viaduc",
+        "y": 98.3,
+        "ground": false,
+        "surf": false
+      },
+      {
+        "t": 12.3,
+        "v": 66.5,
+        "sector": "Grand Viaduc",
+        "y": 96,
+        "ground": false,
+        "surf": false
+      },
+      {
+        "t": 12.8,
+        "v": 68,
+        "sector": "Grand Viaduc",
+        "y": 96.7,
+        "ground": false,
+        "surf": false
+      },
+      {
+        "t": 13.3,
+        "v": 69.3,
+        "sector": "Grand Viaduc",
+        "y": 95.2,
+        "ground": false,
+        "surf": false
+      },
+      {
+        "t": 13.8,
+        "v": 70.7,
+        "sector": "Grand Viaduc",
+        "y": 94.6,
+        "ground": false,
+        "surf": false
+      },
+      {
+        "t": 14.3,
+        "v": 72.1,
+        "sector": "Grand Viaduc",
+        "y": 93.8,
+        "ground": false,
+        "surf": false
+      },
+      {
+        "t": 14.8,
+        "v": 73.4,
+        "sector": "Grand Viaduc",
+        "y": 92.1,
+        "ground": false,
+        "surf": false
+      },
+      {
+        "t": 15.3,
+        "v": 74.7,
+        "sector": "Grand Viaduc",
+        "y": 92,
+        "ground": false,
+        "surf": false
+      },
+      {
+        "t": 15.8,
+        "v": 76,
+        "sector": "Grand Viaduc",
+        "y": 89.4,
+        "ground": false,
+        "surf": false
+      },
+      {
+        "t": 16.3,
+        "v": 77.2,
+        "sector": "Grand Viaduc",
+        "y": 89.8,
+        "ground": false,
+        "surf": false
+      },
+      {
+        "t": 16.8,
+        "v": 78.4,
+        "sector": "Grand Viaduc",
+        "y": 86.6,
+        "ground": false,
+        "surf": false
+      },
+      {
+        "t": 17.3,
+        "v": 79.6,
+        "sector": "Grand Viaduc",
+        "y": 87.5,
+        "ground": false,
+        "surf": false
+      },
+      {
+        "t": 17.8,
+        "v": 80.8,
+        "sector": "Grand Viaduc",
+        "y": 84,
+        "ground": false,
+        "surf": false
+      },
+      {
+        "t": 27.5,
+        "v": 101.4,
+        "sector": "Grand Viaduc",
+        "y": 37.8,
+        "ground": false,
+        "surf": false
+      },
+      {
+        "t": 29.8,
+        "v": 105.6,
+        "sector": "La Boucle",
+        "y": 37.8,
+        "ground": false,
+        "surf": false
+      },
+      {
+        "t": 30.3,
+        "v": 106.4,
+        "sector": "La Boucle",
+        "y": 38.1,
+        "ground": false,
+        "surf": false
+      },
+      {
+        "t": 30.8,
+        "v": 107.3,
+        "sector": "La Boucle",
+        "y": 38.1,
+        "ground": false,
+        "surf": false
+      },
+      {
+        "t": 31.3,
+        "v": 108.2,
+        "sector": "La Boucle",
+        "y": 38.1,
+        "ground": false,
+        "surf": false
+      },
+      {
+        "t": 32,
+        "v": 109.5,
+        "sector": "La Boucle",
+        "y": 39.6,
+        "ground": false,
+        "surf": false
+      },
+      {
+        "t": 32.5,
+        "v": 110.4,
+        "sector": "La Boucle",
+        "y": 40.3,
+        "ground": false,
+        "surf": false
+      },
+      {
+        "t": 33.3,
+        "v": 111.7,
+        "sector": "La Boucle",
+        "y": 41.6,
+        "ground": false,
+        "surf": false
+      },
+      {
+        "t": 33.8,
+        "v": 112.5,
+        "sector": "La Boucle",
+        "y": 42.5,
+        "ground": false,
+        "surf": false
+      },
+      {
+        "t": 34.5,
+        "v": 113.7,
+        "sector": "La Boucle",
+        "y": 44.4,
+        "ground": false,
+        "surf": false
+      },
+      {
+        "t": 35,
+        "v": 114.5,
+        "sector": "La Boucle",
+        "y": 45.7,
+        "ground": false,
+        "surf": false
+      },
+      {
+        "t": 35.5,
+        "v": 115.4,
+        "sector": "La Boucle",
+        "y": 46.9,
+        "ground": false,
+        "surf": false
+      },
+      {
+        "t": 36.3,
+        "v": 116.6,
+        "sector": "La Boucle",
+        "y": 49,
+        "ground": false,
+        "surf": false
+      },
+      {
+        "t": 36.8,
+        "v": 117.4,
+        "sector": "La Boucle",
+        "y": 50.4,
+        "ground": false,
+        "surf": false
+      },
+      {
+        "t": 37.3,
+        "v": 118.2,
+        "sector": "La Boucle",
+        "y": 51.5,
+        "ground": false,
+        "surf": false
+      },
+      {
+        "t": 37.8,
+        "v": 119,
+        "sector": "La Boucle",
+        "y": 53.1,
+        "ground": false,
+        "surf": false
+      },
+      {
+        "t": 38.3,
+        "v": 119.8,
+        "sector": "La Boucle",
+        "y": 54.7,
+        "ground": false,
+        "surf": false
+      },
+      {
+        "t": 38.8,
+        "v": 120.6,
+        "sector": "La Boucle",
+        "y": 56.1,
+        "ground": false,
+        "surf": false
+      },
+      {
+        "t": 39.3,
+        "v": 121.4,
+        "sector": "La Boucle",
+        "y": 57.4,
+        "ground": false,
+        "surf": false
+      },
+      {
+        "t": 39.8,
+        "v": 122.1,
+        "sector": "La Boucle",
+        "y": 58.5,
+        "ground": false,
+        "surf": false
+      },
+      {
+        "t": 40.3,
+        "v": 122.9,
+        "sector": "La Boucle",
+        "y": 59.7,
+        "ground": false,
+        "surf": false
+      },
+      {
+        "t": 40.8,
+        "v": 123.7,
+        "sector": "La Boucle",
+        "y": 61.1,
+        "ground": false,
+        "surf": false
+      },
+      {
+        "t": 41.3,
+        "v": 124.4,
+        "sector": "La Boucle",
+        "y": 62.4,
+        "ground": false,
+        "surf": false
+      },
+      {
+        "t": 41.8,
+        "v": 125.2,
+        "sector": "La Boucle",
+        "y": 63.5,
+        "ground": false,
+        "surf": false
+      },
+      {
+        "t": 42.3,
+        "v": 125.9,
+        "sector": "La Boucle",
+        "y": 64.6,
+        "ground": false,
+        "surf": false
+      },
+      {
+        "t": 42.8,
+        "v": 126.6,
+        "sector": "La Boucle",
+        "y": 65.5,
+        "ground": false,
+        "surf": false
+      },
+      {
+        "t": 43.3,
+        "v": 127.4,
+        "sector": "La Boucle",
+        "y": 66.3,
+        "ground": false,
+        "surf": false
+      }
+    ],
+    "secteurs": [
+      {
+        "nom": "Le Belvédère",
+        "entree": 0,
+        "max": 0
+      },
+      {
+        "nom": "Grand Viaduc",
+        "entree": 4,
+        "max": 9
+      },
+      {
+        "nom": "Le Belvédère",
+        "entree": 0,
+        "max": 24
+      },
+      {
+        "nom": "Grand Viaduc",
+        "entree": 26,
+        "max": 102
+      },
+      {
+        "nom": "Échangeur de la Darse",
+        "entree": 102,
+        "max": 104
+      },
+      {
+        "nom": "La Boucle",
+        "entree": 104,
+        "max": 128
+      }
+    ]
+  },
+  "turn": [
+    {
+      "t": 0.5,
+      "v": 12.2,
+      "sector": "La Boucle",
+      "x": -1762,
+      "z": 543
+    },
+    {
+      "t": 1,
+      "v": 16,
+      "sector": "La Boucle",
+      "x": -1766,
+      "z": 536
+    },
+    {
+      "t": 1.5,
+      "v": 19.6,
+      "sector": "La Boucle",
+      "x": -1769,
+      "z": 528
+    },
+    {
+      "t": 2,
+      "v": 23.3,
+      "sector": "La Boucle",
+      "x": -1774,
+      "z": 518
+    },
+    {
+      "t": 2.5,
+      "v": 27,
+      "sector": "La Boucle",
+      "x": -1779,
+      "z": 507
+    },
+    {
+      "t": 3,
+      "v": 30.4,
+      "sector": "La Boucle",
+      "x": -1786,
+      "z": 495
+    },
+    {
+      "t": 3.5,
+      "v": 33.3,
+      "sector": "La Boucle",
+      "x": -1793,
+      "z": 480
+    },
+    {
+      "t": 4,
+      "v": 36.1,
+      "sector": "La Boucle",
+      "x": -1802,
+      "z": 465
+    },
+    {
+      "t": 4.8,
+      "v": 39.9,
+      "sector": "La Boucle",
+      "x": -1815,
+      "z": 440
+    },
+    {
+      "t": 5.5,
+      "v": 43.5,
+      "sector": "La Boucle",
+      "x": -1830,
+      "z": 413
+    },
+    {
+      "t": 6.5,
+      "v": 47.7,
+      "sector": "La Boucle",
+      "x": -1850,
+      "z": 372
+    },
+    {
+      "t": 7.3,
+      "v": 50.6,
+      "sector": "La Boucle",
+      "x": -1864,
+      "z": 338
+    },
+    {
+      "t": 8.3,
+      "v": 54.3,
+      "sector": "La Boucle",
+      "x": -1885,
+      "z": 290
+    },
+    {
+      "t": 9.3,
+      "v": 57.8,
+      "sector": "La Boucle",
+      "x": -1906,
+      "z": 238
+    },
+    {
+      "t": 10.3,
+      "v": 61,
+      "sector": "La Boucle",
+      "x": -1924,
+      "z": 181
+    },
+    {
+      "t": 11.3,
+      "v": 64.1,
+      "sector": "La Boucle",
+      "x": -1939,
+      "z": 121
+    },
+    {
+      "t": 12.3,
+      "v": 67.1,
+      "sector": "La Boucle",
+      "x": -1953,
+      "z": 57
+    },
+    {
+      "t": 13,
+      "v": 69.2,
+      "sector": "La Boucle",
+      "x": -1959,
+      "z": 6
+    },
+    {
+      "t": 13.8,
+      "v": 71.2,
+      "sector": "La Boucle",
+      "x": -1959,
+      "z": -47
+    },
+    {
+      "t": 14.5,
+      "v": 73.2,
+      "sector": "La Boucle",
+      "x": -1960,
+      "z": -101
+    },
+    {
+      "t": 15,
+      "v": 74.5,
+      "sector": "La Boucle",
+      "x": -1954,
+      "z": -137
+    },
+    {
+      "t": 15.5,
+      "v": 75.8,
+      "sector": "La Boucle",
+      "x": -1951,
+      "z": -175
+    },
+    {
+      "t": 16,
+      "v": 77,
+      "sector": "La Boucle",
+      "x": -1944,
+      "z": -212
+    },
+    {
+      "t": 16.5,
+      "v": 78.3,
+      "sector": "La Boucle",
+      "x": -1936,
+      "z": -250
+    },
+    {
+      "t": 17,
+      "v": 79.5,
+      "sector": "La Boucle",
+      "x": -1929,
+      "z": -289
+    },
+    {
+      "t": 17.5,
+      "v": 80.7,
+      "sector": "La Boucle",
+      "x": -1917,
+      "z": -327
+    },
+    {
+      "t": 18,
+      "v": 81.8,
+      "sector": "La Boucle",
+      "x": -1906,
+      "z": -366
+    },
+    {
+      "t": 18.8,
+      "v": 83.6,
+      "sector": "La Boucle",
+      "x": -1886,
+      "z": -425
+    },
+    {
+      "t": 19.3,
+      "v": 84.7,
+      "sector": "La Boucle",
+      "x": -1872,
+      "z": -465
+    },
+    {
+      "t": 19.8,
+      "v": 85.8,
+      "sector": "La Boucle",
+      "x": -1858,
+      "z": -505
+    },
+    {
+      "t": 20.5,
+      "v": 87.5,
+      "sector": "La Boucle",
+      "x": -1832,
+      "z": -564
+    },
+    {
+      "t": 21.5,
+      "v": 89.7,
+      "sector": "La Boucle",
+      "x": -1795,
+      "z": -644
+    },
+    {
+      "t": 22.5,
+      "v": 91.8,
+      "sector": "La Boucle",
+      "x": -1756,
+      "z": -726
+    },
+    {
+      "t": 23.3,
+      "v": 93.4,
+      "sector": "La Boucle",
+      "x": -1722,
+      "z": -787
+    },
+    {
+      "t": 24,
+      "v": 94.9,
+      "sector": "La Boucle",
+      "x": -1684,
+      "z": -846
+    },
+    {
+      "t": 24.8,
+      "v": 96.4,
+      "sector": "La Boucle",
+      "x": -1645,
+      "z": -906
+    },
+    {
+      "t": 25.3,
+      "v": 97.4,
+      "sector": "La Boucle",
+      "x": -1614,
+      "z": -943
+    },
+    {
+      "t": 25.8,
+      "v": 98.4,
+      "sector": "La Boucle",
+      "x": -1584,
+      "z": -982
+    },
+    {
+      "t": 26.5,
+      "v": 99.8,
+      "sector": "La Boucle",
+      "x": -1536,
+      "z": -1039
+    },
+    {
+      "t": 27,
+      "v": 100.7,
+      "sector": "La Boucle",
+      "x": -1503,
+      "z": -1076
+    },
+    {
+      "t": 27.5,
+      "v": 101.7,
+      "sector": "La Boucle",
+      "x": -1471,
+      "z": -1115
+    },
+    {
+      "t": 28,
+      "v": 102.6,
+      "sector": "La Boucle",
+      "x": -1434,
+      "z": -1150
+    },
+    {
+      "t": 28.5,
+      "v": 103.5,
+      "sector": "La Boucle",
+      "x": -1399,
+      "z": -1188
+    },
+    {
+      "t": 29,
+      "v": 104.4,
+      "sector": "Échangeur de la Darse",
+      "x": -1363,
+      "z": -1225
+    },
+    {
+      "t": 29.5,
+      "v": 105.4,
+      "sector": "Échangeur de la Darse",
+      "x": -1324,
+      "z": -1261
+    },
+    {
+      "t": 30,
+      "v": 106.3,
+      "sector": "Échangeur de la Darse",
+      "x": -1283,
+      "z": -1291
+    },
+    {
+      "t": 30.5,
+      "v": 107.1,
+      "sector": "Grand Viaduc",
+      "x": -1246,
+      "z": -1258
+    }
+  ],
+  "frame": {
+    "fps": 1.7392816766675012,
+    "p50": 550.0999999999767,
+    "p95": 2800
+  },
+  "final": {
+    "state": "playing",
+    "pos": {
+      "x": 1488.148510886438,
+      "y": 1.946670904754357,
+      "z": -1515.9446116361519
+    },
+    "vel": {
+      "x": 84.56724756377758,
+      "y": -0.8000000000000038,
+      "z": 9.51819625555713
+    },
+    "speed": 85.10496707285978,
+    "hspeed": 85.1012069272378,
+    "onGround": false,
+    "surfing": false,
+    "sliding": false,
+    "braking": false,
+    "yaw": -1.659372852041252,
+    "stats": {
+      "jumps": 127,
+      "bhops": 123,
+      "chain": 4,
+      "maxChain": 65,
+      "distance": 9500.64603076571,
+      "topSpeed": 400,
+      "ticks": 17280,
+      "wallHits": 4,
+      "respawns": 0
+    },
+    "sector": "Hauts-Fourneaux",
+    "inspect": {
+      "active": false,
+      "t": 3.5,
+      "weight": 0
+    },
+    "fps": 2.571575518601114,
+    "quality": "low",
+    "gpu": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+    "stream": {
+      "loads": 127,
+      "unloads": 97,
+      "misses": 0,
+      "lateMs": 0,
+      "buildMs": 546.6000000024214,
+      "maxBuildMs": 67.70000000018626,
+      "loaded": 30,
+      "grace": 0
+    },
+    "pen": {
+      "max": 0,
+      "over5cm": 0,
+      "checks": 17280
+    },
+    "locked": true,
+    "dragLook": false,
+    "calls": 113,
+    "tris": 116154
+  },
+  "ok": true
+}
