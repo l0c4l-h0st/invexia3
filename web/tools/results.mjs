@@ -1,7 +1,8 @@
 // Génère tests/RESULTS.md à partir des résultats JSON des tests.
-import { readFileSync, writeFileSync } from 'node:fs';
+import { readFileSync, writeFileSync, existsSync } from 'node:fs';
 const r = JSON.parse(readFileSync('tests/results.json', 'utf8'));
 const m = JSON.parse(readFileSync('tests/results-moves.json', 'utf8'));
+const q = existsSync('tests/results-quality.json') ? JSON.parse(readFileSync('tests/results-quality.json', 'utf8')) : [];
 const cell = (o, n = 420) => '`' + JSON.stringify(o).replace(/\|/g, '/').slice(0, n) + '`';
 const lines = [
   '# Résultats mesurés (Chromium headless, Playwright)', '',
@@ -15,6 +16,9 @@ const lines = [
   '', `## Mouvements (tests/moves.mjs) : ${m.filter((c) => c.ok).length}/${m.length}`, '',
   '| Vérification | Résultat | Mesures |', '| --- | --- | --- |',
   ...m.map((c) => { const { test, ok, ...d } = c; return `| ${test} | ${ok ? 'OK' : 'ÉCHEC'} | ${cell(d, 300)} |`; }),
+  ...(q.length ? ['', `## Graphismes (tests/quality.mjs, écran 1280×720 à densité ×2) : ${q.filter((c) => c.ok).length}/${q.length}`, '',
+    '| Vérification | Résultat | Mesures |', '| --- | --- | --- |',
+    ...q.map((c) => `| ${c.name} | ${c.ok ? 'OK' : 'ÉCHEC'} | ${cell(c.detail, 900)} |`)] : []),
   '', '## Parcours rapide (extrait, temps de jeu)', '',
   '| t (s) | vitesse (m/s) | secteur |', '| --- | --- | --- |',
   ...r.run.log.filter((x, i) => i % 4 === 0).map((x) => `| ${x.t} | ${x.v} | ${x.sector} |`),

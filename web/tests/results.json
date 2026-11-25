@@ -1,5 +1,5 @@
 {
-  "started": "2026-11-25T13:40:16.738Z",
+  "started": "2026-11-25T14:09:52.534Z",
   "file": "file:///home/user/invexia3/web/dist/velocity-fps.html",
   "checks": [
     {
@@ -10,7 +10,7 @@
         "pointerLock": true,
         "repliSourisLibre": false,
         "gpu": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
-        "chargementMs": 3959
+        "chargementMs": 4131
       }
     },
     {
@@ -27,8 +27,8 @@
       "name": "Le karambit bouge en permanence (immobile, sans toucher aux commandes)",
       "ok": true,
       "detail": {
-        "amplitudePosition_mm": 5.8,
-        "amplitudeRotation_quat": 0.089,
+        "amplitudePosition_mm": 5.7,
+        "amplitudeRotation_quat": 0.106,
         "gestesSpontanes_en9s": 4
       }
     },
@@ -38,7 +38,7 @@
       "detail": [
         {
           "figure": "vitrine",
-          "toursMax": 2.02,
+          "toursMax": 2.01,
           "lancer": false
         },
         {
@@ -59,24 +59,25 @@
       "detail": {
         "dernierSaut": {
           "pct": 96,
-          "gain": 6.185137471230455
+          "gain": 3.4018431493789976
         },
-        "affichage": "sync 95 % · +7,4 m/s",
-        "changementsDeTouche": 69
+        "affichage": "sync 95 % · +3,4 m/s au dernier saut",
+        "changementsDeTouche": 75
       }
     },
     {
       "name": "R : retour à l’élan (≈3 s en arrière, vitesse conservée)",
-      "ok": false,
+      "ok": true,
       "detail": {
-        "vitesseAvant": 45.1,
-        "vitesseRestauree": 3,
-        "reculMetres": 70
+        "vitesseAuMomentDeR": 72.8,
+        "vitesseRestauree": 60.9,
+        "secondesRembobinees": 3,
+        "reculMetres": 198
       }
     },
     {
       "name": "F1 : panneau de physique (pause, préréglages appliqués en direct, images/s)",
-      "ok": false,
+      "ok": true,
       "detail": {
         "etatOuvert": "paused",
         "arcade": {
@@ -87,33 +88,38 @@
           "airAccel": 40,
           "airWishCap": 2.4
         },
-        "mesures": "4images/s700.0ms médiane933.3ms 95e centile155appels de dessin",
+        "mesures": "4images/s733.3ms médiane983.4ms 95e centile155appels de dessin",
         "etatApresF1": "playing"
       }
     },
     {
       "name": "Plusieurs secteurs franchis à plus de 100 m/s",
-      "ok": false,
+      "ok": true,
       "detail": {
-        "secteurs": [],
-        "premiers100ms_apres_s": null,
-        "vitesseMax": 88.2,
-        "distanceKm": 6.61,
-        "dureeJeu_s": 211,
+        "secteurs": [
+          "Grand Viaduc",
+          "Échangeur de la Darse",
+          "La Boucle",
+          "Échangeur du Gazomètre"
+        ],
+        "premiers100ms_apres_s": 26.5,
+        "vitesseMax": 138,
+        "distanceKm": 5.66,
+        "dureeJeu_s": 64,
         "rotationVueMax_degParS": 300
       }
     },
     {
       "name": "Inspection du couteau en plein vol sans bloquer le mouvement",
-      "ok": false,
+      "ok": true,
       "detail": {
-        "vitesseAvant": 82.4,
-        "vitessePendant": 34.8,
-        "vitesseApres": 49.9,
+        "vitesseAvant": 82.2,
+        "vitessePendant": 99.3,
+        "vitesseApres": 104.9,
         "poidsPendant": 1,
         "actifPendant": true,
         "tempsInspect": 4.5,
-        "distanceParcourue": 224,
+        "distanceParcourue": 614,
         "finie": true,
         "enLair": true
       }
@@ -122,22 +128,29 @@
       "name": "Frein (Ctrl) : arrêt depuis la vitesse de pointe",
       "ok": true,
       "detail": {
-        "vitesseDepart": 62,
-        "tempsJeu_s": 0.75,
-        "vitesseFinale": 1.4,
-        "secteur": "Friches du Sud"
+        "vitesseDepart": 139.1,
+        "tempsJeu_s": 1.25,
+        "vitesseFinale": 3.9,
+        "secteur": "La Boucle"
       }
     },
     {
       "name": "Demi-tour puis retour sur ses pas dans des lieux déjà traversés",
-      "ok": false,
+      "ok": true,
       "detail": {
-        "secteurAvant": "Friches du Sud",
-        "demiTourApres_s": 4,
+        "secteurAvant": "La Boucle",
+        "demiTourApres_s": 1,
         "secteursTraverses": [
-          "Friches du Sud"
+          "La Boucle",
+          "Échangeur du Gazomètre",
+          "Échangeur de la Darse",
+          "Grand Viaduc"
         ],
-        "reconnus": []
+        "reconnus": [
+          "Échangeur du Gazomètre",
+          "Échangeur de la Darse",
+          "Grand Viaduc"
+        ]
       }
     },
     {
@@ -198,8 +211,8 @@
       "ok": true,
       "detail": {
         "arrive": true,
-        "vitesseMax": 81.3,
-        "secondesAvecContactSurf": 51,
+        "vitesseMax": 93,
+        "secondesAvecContactSurf": 38,
         "secteur": "Hauts-Fourneaux",
         "chute": false
       }
@@ -208,13 +221,13 @@
       "name": "Décor chargé à temps (zone du joueur toujours prête)",
       "ok": true,
       "detail": {
-        "loads": 128,
-        "unloads": 102,
+        "loads": 151,
+        "unloads": 121,
         "misses": 0,
         "lateMs": 0,
-        "buildMs": 166.49999999720603,
-        "maxBuildMs": 7.7000000001862645,
-        "loaded": 26,
+        "buildMs": 224.20000000391155,
+        "maxBuildMs": 24.90000000037253,
+        "loaded": 30,
         "grace": 0
       }
     },
@@ -222,9 +235,9 @@
       "name": "Aucune traversée de géométrie détectée pendant toute la session",
       "ok": true,
       "detail": {
-        "max": 0,
+        "max": 0.0006781515103853053,
         "over5cm": 0,
-        "checks": 62760
+        "checks": 27600
       }
     },
     {
@@ -233,13 +246,13 @@
       "detail": []
     }
   ],
-  "loadMs": 3959,
+  "loadMs": 4131,
   "run": {
-    "secondes": 211,
+    "secondes": 64,
     "log": [
       {
         "t": 0.5,
-        "v": 14,
+        "v": 11.7,
         "sector": "Le Belvédère",
         "y": 105.1,
         "ground": false,
@@ -247,7 +260,7 @@
       },
       {
         "t": 1.3,
-        "v": 21.6,
+        "v": 16,
         "sector": "Le Belvédère",
         "y": 104.7,
         "ground": true,
@@ -255,1801 +268,569 @@
       },
       {
         "t": 2,
-        "v": 28.4,
-        "sector": "Grand Viaduc",
-        "y": 107.3,
+        "v": 5.6,
+        "sector": "Le Belvédère",
+        "y": 105,
         "ground": false,
         "surf": false
       },
       {
         "t": 2.8,
-        "v": 32.7,
-        "sector": "Grand Viaduc",
-        "y": 101.2,
+        "v": 10.7,
+        "sector": "Le Belvédère",
+        "y": 105.3,
         "ground": false,
         "surf": false
       },
       {
         "t": 3.5,
-        "v": 38.9,
-        "sector": "Le Terril",
-        "y": 92.3,
+        "v": 15.2,
+        "sector": "Le Belvédère",
+        "y": 105.6,
         "ground": false,
         "surf": false
       },
       {
         "t": 4.3,
-        "v": 44.7,
-        "sector": "Le Terril",
-        "y": 88.1,
+        "v": 19.1,
+        "sector": "Grand Viaduc",
+        "y": 105.9,
         "ground": false,
         "surf": false
       },
       {
         "t": 5,
-        "v": 50.1,
-        "sector": "Le Terril",
-        "y": 72.5,
+        "v": 23,
+        "sector": "Grand Viaduc",
+        "y": 106,
         "ground": false,
         "surf": false
       },
       {
         "t": 5.8,
-        "v": 58.7,
-        "sector": "Le Terril",
-        "y": 69.8,
+        "v": 26.7,
+        "sector": "Grand Viaduc",
+        "y": 105.8,
         "ground": false,
         "surf": false
       },
       {
         "t": 6.5,
-        "v": 62.9,
-        "sector": "Le Terril",
-        "y": 59.9,
+        "v": 30.3,
+        "sector": "Grand Viaduc",
+        "y": 105.6,
         "ground": false,
         "surf": false
       },
       {
         "t": 7.3,
-        "v": 66.7,
-        "sector": "Le Terril",
-        "y": 38.8,
+        "v": 33.7,
+        "sector": "Grand Viaduc",
+        "y": 105.2,
         "ground": false,
         "surf": false
       },
       {
         "t": 8,
-        "v": 70.4,
-        "sector": "Le Terril",
-        "y": 6.3,
+        "v": 37.1,
+        "sector": "Grand Viaduc",
+        "y": 104.8,
         "ground": false,
         "surf": false
       },
       {
         "t": 8.8,
-        "v": 78.3,
-        "sector": "Friches du Nord",
-        "y": 3.3,
+        "v": 40.5,
+        "sector": "Grand Viaduc",
+        "y": 104.3,
         "ground": false,
         "surf": false
       },
       {
-        "t": 9.5,
-        "v": 81.4,
-        "sector": "Friches du Nord",
-        "y": 2.9,
+        "t": 9.3,
+        "v": 42.8,
+        "sector": "Grand Viaduc",
+        "y": 102.8,
         "ground": false,
         "surf": false
       },
       {
-        "t": 17.5,
-        "v": 54.6,
-        "sector": "Friches du Nord",
-        "y": 1.3,
+        "t": 10,
+        "v": 46.2,
+        "sector": "Grand Viaduc",
+        "y": 102.4,
         "ground": false,
         "surf": false
       },
       {
-        "t": 18.3,
-        "v": 57.4,
-        "sector": "Friches du Nord",
-        "y": 1.6,
+        "t": 10.8,
+        "v": 49.6,
+        "sector": "Grand Viaduc",
+        "y": 102,
         "ground": false,
         "surf": false
       },
       {
-        "t": 19.3,
-        "v": 63,
-        "sector": "Friches du Nord",
-        "y": 2.3,
+        "t": 11.5,
+        "v": 52.9,
+        "sector": "Grand Viaduc",
+        "y": 101.6,
         "ground": false,
         "surf": false
       },
       {
-        "t": 20.3,
-        "v": 68,
-        "sector": "Friches du Nord",
-        "y": 1.2,
+        "t": 12.3,
+        "v": 56.1,
+        "sector": "Grand Viaduc",
+        "y": 101,
         "ground": false,
         "surf": false
       },
       {
-        "t": 21,
-        "v": 71.5,
-        "sector": "Friches du Nord",
-        "y": 1.7,
+        "t": 13,
+        "v": 59.2,
+        "sector": "Grand Viaduc",
+        "y": 100.3,
         "ground": false,
         "surf": false
       },
       {
-        "t": 22,
-        "v": 15,
-        "sector": "Friches de l'Ouest",
-        "y": 2.6,
+        "t": 13.5,
+        "v": 61.3,
+        "sector": "Grand Viaduc",
+        "y": 99.1,
         "ground": false,
         "surf": false
       },
       {
-        "t": 23,
-        "v": 24.8,
-        "sector": "Friches de l'Ouest",
-        "y": 1.6,
+        "t": 14.3,
+        "v": 64.3,
+        "sector": "Grand Viaduc",
+        "y": 97.4,
         "ground": false,
         "surf": false
       },
       {
-        "t": 23.8,
-        "v": 31.5,
-        "sector": "Friches de l'Ouest",
-        "y": 1.6,
+        "t": 15,
+        "v": 67.3,
+        "sector": "Grand Viaduc",
+        "y": 96.1,
         "ground": false,
         "surf": false
       },
       {
-        "t": 24.5,
-        "v": 37.8,
-        "sector": "Friches de l'Ouest",
-        "y": 1.9,
+        "t": 15.8,
+        "v": 70.1,
+        "sector": "Grand Viaduc",
+        "y": 95.7,
         "ground": false,
         "surf": false
       },
       {
-        "t": 25.3,
-        "v": 43.6,
-        "sector": "Friches de l'Ouest",
-        "y": 2.1,
+        "t": 16.5,
+        "v": 73,
+        "sector": "Grand Viaduc",
+        "y": 94.9,
         "ground": false,
         "surf": false
       },
       {
-        "t": 26,
-        "v": 49,
-        "sector": "Friches de l'Ouest",
-        "y": 2.3,
+        "t": 17.3,
+        "v": 75.8,
+        "sector": "Grand Viaduc",
+        "y": 93.7,
         "ground": false,
         "surf": false
       },
       {
-        "t": 26.8,
-        "v": 12.9,
-        "sector": "Friches de l'Ouest",
-        "y": 2.4,
+        "t": 18,
+        "v": 78.6,
+        "sector": "Grand Viaduc",
+        "y": 91.7,
         "ground": false,
         "surf": false
       },
       {
-        "t": 27.5,
-        "v": 2.8,
-        "sector": "Friches de l'Ouest",
-        "y": 2.6,
+        "t": 18.8,
+        "v": 81.3,
+        "sector": "Grand Viaduc",
+        "y": 88.8,
         "ground": false,
         "surf": false
       },
       {
-        "t": 28.3,
-        "v": 10,
-        "sector": "Friches de l'Ouest",
-        "y": 2.6,
+        "t": 26.5,
+        "v": 107.2,
+        "sector": "Grand Viaduc",
+        "y": 59.3,
         "ground": false,
         "surf": false
       },
       {
-        "t": 29,
-        "v": 17.9,
-        "sector": "Friches de l'Ouest",
-        "y": 2.6,
+        "t": 28.8,
+        "v": 114,
+        "sector": "Grand Viaduc",
+        "y": 43.9,
         "ground": false,
         "surf": false
       },
       {
-        "t": 29.8,
-        "v": 25.2,
-        "sector": "Friches de l'Ouest",
-        "y": 2.6,
+        "t": 29.5,
+        "v": 116.2,
+        "sector": "Échangeur de la Darse",
+        "y": 37.9,
         "ground": false,
         "surf": false
       },
       {
-        "t": 30.5,
-        "v": 32,
-        "sector": "Friches de l'Ouest",
-        "y": 2.6,
+        "t": 30.3,
+        "v": 118.4,
+        "sector": "Échangeur de la Darse",
+        "y": 38,
+        "ground": false,
+        "surf": false
+      },
+      {
+        "t": 31,
+        "v": 17.7,
+        "sector": "Échangeur de la Darse",
+        "y": 38,
         "ground": false,
         "surf": false
       },
       {
         "t": 31.5,
-        "v": 2.2,
-        "sector": "Friches de l'Ouest",
-        "y": 1.4,
+        "v": 20.2,
+        "sector": "Échangeur de la Darse",
+        "y": 37.7,
         "ground": false,
         "surf": false
       },
       {
         "t": 32.3,
-        "v": 7.6,
-        "sector": "Friches de l'Ouest",
-        "y": 1.4,
+        "v": 24.1,
+        "sector": "La Boucle",
+        "y": 37.9,
         "ground": false,
         "surf": false
       },
       {
         "t": 33,
-        "v": 15.6,
-        "sector": "Friches de l'Ouest",
-        "y": 1.6,
+        "v": 28,
+        "sector": "La Boucle",
+        "y": 37.9,
         "ground": false,
         "surf": false
       },
       {
-        "t": 34,
-        "v": 25.5,
-        "sector": "Friches de l'Ouest",
-        "y": 2.5,
+        "t": 33.8,
+        "v": 31.7,
+        "sector": "La Boucle",
+        "y": 38,
         "ground": false,
         "surf": false
       },
       {
-        "t": 35,
-        "v": 34.3,
-        "sector": "Friches de l'Ouest",
-        "y": 1.6,
+        "t": 34.5,
+        "v": 35.3,
+        "sector": "La Boucle",
+        "y": 38,
         "ground": false,
         "surf": false
       },
       {
-        "t": 35.8,
-        "v": 40.3,
-        "sector": "Friches de l'Ouest",
-        "y": 1.3,
+        "t": 35.5,
+        "v": 39.9,
+        "sector": "La Boucle",
+        "y": 36.9,
         "ground": false,
         "surf": false
       },
       {
-        "t": 36.5,
-        "v": 45.8,
-        "sector": "Friches de l'Ouest",
-        "y": 1.5,
+        "t": 36.3,
+        "v": 43.3,
+        "sector": "La Boucle",
+        "y": 37.5,
         "ground": false,
         "surf": false
       },
       {
-        "t": 37.5,
-        "v": 2.1,
-        "sector": "Friches de l'Ouest",
-        "y": 2.5,
+        "t": 37.3,
+        "v": 47.7,
+        "sector": "La Boucle",
+        "y": 38.4,
         "ground": false,
         "surf": false
       },
       {
-        "t": 38.3,
-        "v": 3.7,
-        "sector": "Friches de l'Ouest",
-        "y": 2.6,
+        "t": 38,
+        "v": 50.9,
+        "sector": "La Boucle",
+        "y": 38.5,
         "ground": false,
         "surf": false
       },
       {
         "t": 39,
-        "v": 10.7,
-        "sector": "Friches de l'Ouest",
-        "y": 2.5,
+        "v": 55.2,
+        "sector": "La Boucle",
+        "y": 39,
         "ground": false,
         "surf": false
       },
       {
         "t": 39.8,
-        "v": 18.5,
-        "sector": "Friches de l'Ouest",
-        "y": 2.4,
+        "v": 58.4,
+        "sector": "La Boucle",
+        "y": 39.7,
         "ground": false,
         "surf": false
       },
       {
         "t": 40.8,
-        "v": 28,
-        "sector": "Friches de l'Ouest",
-        "y": 1.9,
+        "v": 62.5,
+        "sector": "La Boucle",
+        "y": 39.8,
         "ground": false,
         "surf": false
       },
       {
         "t": 41.5,
-        "v": 34.5,
-        "sector": "Friches de l'Ouest",
-        "y": 2.1,
+        "v": 65.5,
+        "sector": "La Boucle",
+        "y": 41.1,
         "ground": false,
         "surf": false
       },
       {
         "t": 42.3,
-        "v": 40.5,
-        "sector": "Friches de l'Ouest",
-        "y": 2.4,
+        "v": 68.4,
+        "sector": "La Boucle",
+        "y": 42,
         "ground": false,
         "surf": false
       },
       {
-        "t": 43.3,
-        "v": 47.8,
-        "sector": "Friches de l'Ouest",
-        "y": 2.5,
+        "t": 43,
+        "v": 71.3,
+        "sector": "La Boucle",
+        "y": 42.4,
         "ground": false,
         "surf": false
       },
       {
-        "t": 44,
-        "v": 0.1,
-        "sector": "Friches de l'Ouest",
-        "y": 2.3,
+        "t": 43.8,
+        "v": 74.1,
+        "sector": "La Boucle",
+        "y": 43.9,
         "ground": false,
         "surf": false
       },
       {
         "t": 44.8,
-        "v": 4.2,
-        "sector": "Friches de l'Ouest",
-        "y": 2.1,
+        "v": 77.8,
+        "sector": "La Boucle",
+        "y": 45.3,
         "ground": false,
         "surf": false
       },
       {
         "t": 45.5,
-        "v": 8.6,
-        "sector": "Friches de l'Ouest",
-        "y": 2,
+        "v": 80.6,
+        "sector": "La Boucle",
+        "y": 46.9,
         "ground": false,
         "surf": false
       },
       {
-        "t": 46.3,
-        "v": 16.5,
-        "sector": "Friches de l'Ouest",
-        "y": 2.1,
+        "t": 46.5,
+        "v": 84.2,
+        "sector": "La Boucle",
+        "y": 48.8,
         "ground": false,
         "surf": false
       },
       {
-        "t": 47,
-        "v": 23.9,
-        "sector": "Friches de l'Ouest",
-        "y": 2.2,
+        "t": 47.5,
+        "v": 87.6,
+        "sector": "La Boucle",
+        "y": 50.9,
         "ground": false,
         "surf": false
       },
       {
-        "t": 48,
-        "v": 33,
-        "sector": "Friches de l'Ouest",
-        "y": 2,
+        "t": 48.3,
+        "v": 90.2,
+        "sector": "La Boucle",
+        "y": 52.2,
         "ground": false,
         "surf": false
       },
       {
         "t": 49,
-        "v": 41,
-        "sector": "Friches de l'Ouest",
-        "y": 1.6,
+        "v": 92.7,
+        "sector": "La Boucle",
+        "y": 54,
         "ground": false,
         "surf": false
       },
       {
         "t": 49.8,
-        "v": 46.5,
-        "sector": "Friches de l'Ouest",
-        "y": 1.8,
+        "v": 95.2,
+        "sector": "La Boucle",
+        "y": 55.6,
         "ground": false,
         "surf": false
       },
       {
-        "t": 50.8,
-        "v": 53.2,
-        "sector": "Friches du Nord",
-        "y": 2.2,
+        "t": 50.5,
+        "v": 97.7,
+        "sector": "La Boucle",
+        "y": 57,
         "ground": false,
         "surf": false
       },
       {
-        "t": 51.8,
-        "v": 59.1,
-        "sector": "Friches du Nord",
-        "y": 1.4,
+        "t": 51.3,
+        "v": 100.1,
+        "sector": "La Boucle",
+        "y": 59,
         "ground": false,
         "surf": false
       },
       {
-        "t": 52.5,
-        "v": 63.2,
-        "sector": "Friches du Nord",
-        "y": 1.6,
+        "t": 52.3,
+        "v": 103.2,
+        "sector": "La Boucle",
+        "y": 61,
         "ground": false,
         "surf": false
       },
       {
-        "t": 53.3,
-        "v": 67,
-        "sector": "Friches du Nord",
-        "y": 1.8,
+        "t": 53,
+        "v": 105.6,
+        "sector": "La Boucle",
+        "y": 62.1,
         "ground": false,
         "surf": false
       },
       {
-        "t": 54,
-        "v": 17.8,
-        "sector": "Friches du Nord",
-        "y": 2.3,
+        "t": 53.8,
+        "v": 107.8,
+        "sector": "La Boucle",
+        "y": 63.9,
         "ground": false,
         "surf": false
       },
       {
-        "t": 55,
-        "v": 27.4,
-        "sector": "Friches de l'Ouest",
-        "y": 2.3,
+        "t": 54.5,
+        "v": 110.1,
+        "sector": "La Boucle",
+        "y": 65,
         "ground": false,
         "surf": false
       },
       {
-        "t": 56,
-        "v": 36.1,
-        "sector": "Friches de l'Ouest",
-        "y": 3.4,
+        "t": 55.3,
+        "v": 112.3,
+        "sector": "La Boucle",
+        "y": 66,
         "ground": false,
         "surf": false
       },
       {
-        "t": 56.8,
-        "v": 42,
-        "sector": "Friches de l'Ouest",
-        "y": 4,
+        "t": 56.3,
+        "v": 115.2,
+        "sector": "La Boucle",
+        "y": 67.2,
+        "ground": false,
+        "surf": false
+      },
+      {
+        "t": 57,
+        "v": 117.4,
+        "sector": "La Boucle",
+        "y": 68.3,
         "ground": false,
         "surf": false
       },
       {
         "t": 57.8,
-        "v": 49.2,
-        "sector": "Friches de l'Ouest",
-        "y": 3.6,
+        "v": 119.5,
+        "sector": "La Boucle",
+        "y": 69.4,
         "ground": false,
         "surf": false
       },
       {
-        "t": 58.5,
-        "v": 10.9,
-        "sector": "Friches de l'Ouest",
-        "y": 3.9,
+        "t": 58.3,
+        "v": 120.9,
+        "sector": "La Boucle",
+        "y": 69.6,
         "ground": false,
         "surf": false
       },
       {
-        "t": 59.3,
-        "v": 18.5,
-        "sector": "Docks de la Darse",
-        "y": 4.1,
+        "t": 59,
+        "v": 123,
+        "sector": "La Boucle",
+        "y": 70.4,
         "ground": false,
         "surf": false
       },
       {
-        "t": 60,
-        "v": 25.7,
-        "sector": "Docks de la Darse",
-        "y": 4.3,
+        "t": 59.8,
+        "v": 125,
+        "sector": "La Boucle",
+        "y": 70.8,
         "ground": false,
         "surf": false
       },
       {
-        "t": 60.8,
-        "v": 32.4,
-        "sector": "Docks de la Darse",
-        "y": 4.4,
+        "t": 60.3,
+        "v": 126.4,
+        "sector": "La Boucle",
+        "y": 71,
+        "ground": false,
+        "surf": false
+      },
+      {
+        "t": 61,
+        "v": 128.4,
+        "sector": "La Boucle",
+        "y": 71.4,
         "ground": false,
         "surf": false
       },
       {
         "t": 61.8,
-        "v": 40.7,
-        "sector": "Friches de l'Ouest",
-        "y": 4,
+        "v": 130.3,
+        "sector": "La Boucle",
+        "y": 71.6,
         "ground": false,
         "surf": false
       },
       {
-        "t": 62.8,
-        "v": 7.8,
-        "sector": "Friches de l'Ouest",
-        "y": 4.1,
+        "t": 62.5,
+        "v": 132.3,
+        "sector": "La Boucle",
+        "y": 71.7,
         "ground": false,
         "surf": false
       },
       {
-        "t": 63.5,
-        "v": 15.7,
-        "sector": "Friches de l'Ouest",
-        "y": 4.2,
+        "t": 63.3,
+        "v": 134.2,
+        "sector": "La Boucle",
+        "y": 71.6,
         "ground": false,
         "surf": false
       },
       {
-        "t": 64.3,
-        "v": 23.2,
-        "sector": "Friches de l'Ouest",
-        "y": 4.3,
-        "ground": false,
-        "surf": false
-      },
-      {
-        "t": 65,
-        "v": 30.1,
-        "sector": "Friches de l'Ouest",
-        "y": 4.3,
-        "ground": false,
-        "surf": false
-      },
-      {
-        "t": 66,
-        "v": 3.6,
-        "sector": "Friches de l'Ouest",
-        "y": 3.9,
-        "ground": false,
-        "surf": false
-      },
-      {
-        "t": 66.8,
-        "v": 12.2,
-        "sector": "Friches de l'Ouest",
-        "y": 3.8,
-        "ground": false,
-        "surf": false
-      },
-      {
-        "t": 67.8,
-        "v": 22.3,
-        "sector": "Friches de l'Ouest",
-        "y": 4.2,
-        "ground": false,
-        "surf": false
-      },
-      {
-        "t": 68.8,
-        "v": 31.4,
-        "sector": "Friches de l'Ouest",
-        "y": 4.2,
-        "ground": false,
-        "surf": false
-      },
-      {
-        "t": 69.8,
-        "v": 7.7,
-        "sector": "Friches de l'Ouest",
-        "y": 3.7,
-        "ground": false,
-        "surf": false
-      },
-      {
-        "t": 70.8,
-        "v": 18.2,
-        "sector": "Friches de l'Ouest",
-        "y": 4.4,
-        "ground": false,
-        "surf": false
-      },
-      {
-        "t": 71.8,
-        "v": 27.8,
-        "sector": "Friches de l'Ouest",
-        "y": 3.4,
-        "ground": false,
-        "surf": false
-      },
-      {
-        "t": 72.8,
-        "v": 36.3,
-        "sector": "Friches de l'Ouest",
-        "y": 4.2,
-        "ground": false,
-        "surf": false
-      },
-      {
-        "t": 73.8,
-        "v": 44.1,
-        "sector": "Friches de l'Ouest",
-        "y": 3.9,
-        "ground": false,
-        "surf": false
-      },
-      {
-        "t": 74.8,
-        "v": 51,
-        "sector": "Friches de l'Ouest",
-        "y": 3.6,
-        "ground": false,
-        "surf": false
-      },
-      {
-        "t": 75.8,
-        "v": 57.3,
-        "sector": "Friches de l'Ouest",
-        "y": 4.1,
-        "ground": false,
-        "surf": false
-      },
-      {
-        "t": 76.8,
-        "v": 62.9,
-        "sector": "Friches de l'Ouest",
-        "y": 2.9,
-        "ground": false,
-        "surf": false
-      },
-      {
-        "t": 77.8,
-        "v": 67.8,
-        "sector": "Friches de l'Ouest",
-        "y": 3.7,
-        "ground": false,
-        "surf": false
-      },
-      {
-        "t": 78.8,
-        "v": 2.7,
-        "sector": "Friches de l'Ouest",
-        "y": 3.4,
-        "ground": false,
-        "surf": false
-      },
-      {
-        "t": 79.5,
-        "v": 13.2,
-        "sector": "Friches de l'Ouest",
-        "y": 3.2,
-        "ground": false,
-        "surf": false
-      },
-      {
-        "t": 80.5,
-        "v": 23.3,
-        "sector": "Friches de l'Ouest",
-        "y": 2.9,
-        "ground": false,
-        "surf": false
-      },
-      {
-        "t": 81.5,
-        "v": 4.2,
-        "sector": "Friches de l'Ouest",
-        "y": 3.3,
-        "ground": false,
-        "surf": false
-      },
-      {
-        "t": 82.5,
-        "v": 14.2,
-        "sector": "Friches de l'Ouest",
-        "y": 2.2,
-        "ground": false,
-        "surf": false
-      },
-      {
-        "t": 83.5,
-        "v": 24.1,
-        "sector": "Friches de l'Ouest",
-        "y": 3.1,
-        "ground": false,
-        "surf": false
-      },
-      {
-        "t": 84.3,
-        "v": 31,
-        "sector": "Friches de l'Ouest",
-        "y": 3.1,
-        "ground": false,
-        "surf": false
-      },
-      {
-        "t": 85.3,
-        "v": 39.4,
-        "sector": "Friches de l'Ouest",
-        "y": 2.3,
-        "ground": false,
-        "surf": false
-      },
-      {
-        "t": 86,
-        "v": 45.1,
-        "sector": "Friches de l'Ouest",
-        "y": 1.9,
-        "ground": false,
-        "surf": false
-      },
-      {
-        "t": 86.5,
-        "v": 48.7,
-        "sector": "Friches de l'Ouest",
-        "y": 2.1,
-        "ground": false,
-        "surf": false
-      },
-      {
-        "t": 87.3,
-        "v": 1.5,
-        "sector": "Friches de l'Ouest",
-        "y": 2.2,
-        "ground": false,
-        "surf": false
-      },
-      {
-        "t": 88,
-        "v": 2.1,
-        "sector": "Friches de l'Ouest",
-        "y": 2.2,
-        "ground": false,
-        "surf": false
-      },
-      {
-        "t": 89,
-        "v": 13.6,
-        "sector": "Friches de l'Ouest",
-        "y": 1.1,
-        "ground": false,
-        "surf": false
-      },
-      {
-        "t": 89.8,
-        "v": 21.2,
-        "sector": "Friches de l'Ouest",
-        "y": 1.3,
-        "ground": false,
-        "surf": false
-      },
-      {
-        "t": 90.5,
-        "v": 28.2,
-        "sector": "Friches de l'Ouest",
-        "y": 1.5,
-        "ground": false,
-        "surf": false
-      },
-      {
-        "t": 91.5,
-        "v": 4,
-        "sector": "Friches de l'Ouest",
-        "y": 2.2,
-        "ground": false,
-        "surf": false
-      },
-      {
-        "t": 92.5,
-        "v": 3.7,
-        "sector": "Friches de l'Ouest",
-        "y": 1.3,
-        "ground": false,
-        "surf": false
-      },
-      {
-        "t": 93.3,
-        "v": 3.8,
-        "sector": "Friches de l'Ouest",
-        "y": 1.1,
-        "ground": false,
-        "surf": false
-      },
-      {
-        "t": 94.3,
-        "v": 16.5,
-        "sector": "Friches de l'Ouest",
-        "y": 2.1,
-        "ground": false,
-        "surf": false
-      },
-      {
-        "t": 95.3,
-        "v": 26.3,
-        "sector": "Friches de l'Ouest",
-        "y": 1.8,
-        "ground": false,
-        "surf": false
-      },
-      {
-        "t": 96.3,
-        "v": 4.2,
-        "sector": "Friches de l'Ouest",
-        "y": 1.8,
-        "ground": false,
-        "surf": false
-      },
-      {
-        "t": 97.3,
-        "v": 9,
-        "sector": "Friches de l'Ouest",
-        "y": 2.2,
-        "ground": false,
-        "surf": false
-      },
-      {
-        "t": 98.3,
-        "v": 19.5,
-        "sector": "Friches de l'Ouest",
-        "y": 1.7,
-        "ground": false,
-        "surf": false
-      },
-      {
-        "t": 99,
-        "v": 26.7,
-        "sector": "Friches de l'Ouest",
-        "y": 1.4,
-        "ground": false,
-        "surf": false
-      },
-      {
-        "t": 100,
-        "v": 35.3,
-        "sector": "Friches de l'Ouest",
-        "y": 2,
-        "ground": false,
-        "surf": false
-      },
-      {
-        "t": 101,
-        "v": 43.2,
-        "sector": "Friches de l'Ouest",
-        "y": 1.8,
-        "ground": false,
-        "surf": false
-      },
-      {
-        "t": 101.8,
-        "v": 48.6,
-        "sector": "Friches de l'Ouest",
-        "y": 1.6,
-        "ground": false,
-        "surf": false
-      },
-      {
-        "t": 102.8,
-        "v": 55,
-        "sector": "Friches de l'Ouest",
-        "y": 1.6,
-        "ground": false,
-        "surf": false
-      },
-      {
-        "t": 103.8,
-        "v": 4.3,
-        "sector": "Friches de l'Ouest",
-        "y": 2,
-        "ground": false,
-        "surf": false
-      },
-      {
-        "t": 104.8,
-        "v": 5.1,
-        "sector": "Friches de l'Ouest",
-        "y": 0.9,
-        "ground": false,
-        "surf": false
-      },
-      {
-        "t": 105.5,
-        "v": 7.6,
-        "sector": "Friches de l'Ouest",
-        "y": 1.2,
-        "ground": false,
-        "surf": false
-      },
-      {
-        "t": 106.5,
-        "v": 18.1,
-        "sector": "Friches de l'Ouest",
-        "y": 2.1,
-        "ground": false,
-        "surf": false
-      },
-      {
-        "t": 107.5,
-        "v": 27.8,
-        "sector": "Friches de l'Ouest",
-        "y": 1.3,
-        "ground": false,
-        "surf": false
-      },
-      {
-        "t": 108.5,
-        "v": 1.9,
-        "sector": "Friches de l'Ouest",
-        "y": 2.2,
-        "ground": false,
-        "surf": false
-      },
-      {
-        "t": 109.3,
-        "v": 9.8,
-        "sector": "Friches de l'Ouest",
-        "y": 2.3,
-        "ground": false,
-        "surf": false
-      },
-      {
-        "t": 110.3,
-        "v": 20.3,
-        "sector": "Friches de l'Ouest",
-        "y": 1.7,
-        "ground": false,
-        "surf": false
-      },
-      {
-        "t": 111,
-        "v": 27.4,
-        "sector": "Friches de l'Ouest",
-        "y": 1.5,
-        "ground": false,
-        "surf": false
-      },
-      {
-        "t": 112,
-        "v": 1.2,
-        "sector": "Friches de l'Ouest",
-        "y": 2.5,
-        "ground": false,
-        "surf": false
-      },
-      {
-        "t": 113,
-        "v": 12.7,
-        "sector": "Friches de l'Ouest",
-        "y": 2.2,
-        "ground": false,
-        "surf": false
-      },
-      {
-        "t": 114,
-        "v": 22.8,
-        "sector": "Friches de l'Ouest",
-        "y": 2.2,
-        "ground": false,
-        "surf": false
-      },
-      {
-        "t": 115,
-        "v": 31.8,
-        "sector": "Friches de l'Ouest",
-        "y": 2.6,
-        "ground": false,
-        "surf": false
-      },
-      {
-        "t": 116,
-        "v": 39.9,
-        "sector": "Friches de l'Ouest",
-        "y": 1.7,
-        "ground": false,
-        "surf": false
-      },
-      {
-        "t": 117,
-        "v": 1.7,
-        "sector": "Friches de l'Ouest",
-        "y": 2.6,
-        "ground": false,
-        "surf": false
-      },
-      {
-        "t": 118,
-        "v": 3.6,
-        "sector": "Friches de l'Ouest",
-        "y": 2,
-        "ground": false,
-        "surf": false
-      },
-      {
-        "t": 119,
-        "v": 13.4,
-        "sector": "Friches de l'Ouest",
-        "y": 1.7,
-        "ground": false,
-        "surf": false
-      },
-      {
-        "t": 120,
-        "v": 23.5,
-        "sector": "Friches de l'Ouest",
-        "y": 2.6,
-        "ground": false,
-        "surf": false
-      },
-      {
-        "t": 121,
-        "v": 32.6,
-        "sector": "Friches de l'Ouest",
-        "y": 2.2,
-        "ground": false,
-        "surf": false
-      },
-      {
-        "t": 122,
-        "v": 2.2,
-        "sector": "Friches de l'Ouest",
-        "y": 2.3,
-        "ground": false,
-        "surf": false
-      },
-      {
-        "t": 122.8,
-        "v": 3.3,
-        "sector": "Friches de l'Ouest",
-        "y": 2.4,
-        "ground": false,
-        "surf": false
-      },
-      {
-        "t": 123.8,
-        "v": 11.4,
-        "sector": "Friches de l'Ouest",
-        "y": 2.5,
-        "ground": false,
-        "surf": false
-      },
-      {
-        "t": 124.8,
-        "v": 21.6,
-        "sector": "Friches de l'Ouest",
-        "y": 1.7,
-        "ground": false,
-        "surf": false
-      },
-      {
-        "t": 125.5,
-        "v": 28.5,
-        "sector": "Friches de l'Ouest",
-        "y": 2,
-        "ground": false,
-        "surf": false
-      },
-      {
-        "t": 126.5,
-        "v": 1.9,
-        "sector": "Friches de l'Ouest",
-        "y": 2.6,
-        "ground": false,
-        "surf": false
-      },
-      {
-        "t": 127.5,
-        "v": 2.5,
-        "sector": "Friches de l'Ouest",
-        "y": 1.5,
-        "ground": false,
-        "surf": false
-      },
-      {
-        "t": 128.3,
-        "v": 7.5,
-        "sector": "Friches de l'Ouest",
-        "y": 1.3,
-        "ground": true,
-        "surf": false
-      },
-      {
-        "t": 129.3,
-        "v": 17.4,
-        "sector": "Friches de l'Ouest",
-        "y": 2.5,
-        "ground": false,
-        "surf": false
-      },
-      {
-        "t": 130.3,
-        "v": 27.1,
-        "sector": "Friches de l'Ouest",
-        "y": 2.1,
-        "ground": false,
-        "surf": false
-      },
-      {
-        "t": 131.3,
-        "v": 3.9,
-        "sector": "Friches de l'Ouest",
-        "y": 2.2,
-        "ground": false,
-        "surf": false
-      },
-      {
-        "t": 132.3,
-        "v": 3.8,
-        "sector": "Friches de l'Ouest",
-        "y": 2.5,
-        "ground": false,
-        "surf": false
-      },
-      {
-        "t": 133.3,
-        "v": 7.2,
-        "sector": "Friches de l'Ouest",
-        "y": 1.5,
-        "ground": false,
-        "surf": false
-      },
-      {
-        "t": 134.3,
-        "v": 17.7,
-        "sector": "Friches de l'Ouest",
-        "y": 2.5,
-        "ground": false,
-        "surf": false
-      },
-      {
-        "t": 135.3,
-        "v": 27.4,
-        "sector": "Friches de l'Ouest",
-        "y": 1.9,
-        "ground": false,
-        "surf": false
-      },
-      {
-        "t": 136.3,
-        "v": 36,
-        "sector": "Friches de l'Ouest",
-        "y": 2.4,
-        "ground": false,
-        "surf": false
-      },
-      {
-        "t": 137,
-        "v": 41.9,
-        "sector": "Friches de l'Ouest",
-        "y": 2.6,
-        "ground": false,
-        "surf": false
-      },
-      {
-        "t": 138,
-        "v": 49.1,
-        "sector": "Friches de l'Ouest",
-        "y": 2.3,
-        "ground": false,
-        "surf": false
-      },
-      {
-        "t": 139,
-        "v": 55.6,
-        "sector": "Friches de l'Ouest",
-        "y": 2.4,
-        "ground": false,
-        "surf": false
-      },
-      {
-        "t": 139.8,
-        "v": 60,
-        "sector": "Friches de l'Ouest",
-        "y": 2.5,
-        "ground": false,
-        "surf": false
-      },
-      {
-        "t": 140.8,
-        "v": 3.8,
-        "sector": "Friches de l'Ouest",
-        "y": 2.4,
-        "ground": false,
-        "surf": false
-      },
-      {
-        "t": 141.5,
-        "v": 11.8,
-        "sector": "Friches de l'Ouest",
-        "y": 2.2,
-        "ground": false,
-        "surf": false
-      },
-      {
-        "t": 142.5,
-        "v": 22,
-        "sector": "Friches de l'Ouest",
-        "y": 1.8,
-        "ground": false,
-        "surf": false
-      },
-      {
-        "t": 143.3,
-        "v": 29,
-        "sector": "Friches de l'Ouest",
-        "y": 1.9,
-        "ground": false,
-        "surf": false
-      },
-      {
-        "t": 144,
-        "v": 4.2,
-        "sector": "Friches de l'Ouest",
-        "y": 1,
-        "ground": true,
-        "surf": false
-      },
-      {
-        "t": 144.8,
-        "v": 5.2,
-        "sector": "Friches de l'Ouest",
-        "y": 2,
-        "ground": false,
-        "surf": false
-      },
-      {
-        "t": 145.8,
-        "v": 15.8,
-        "sector": "Friches de l'Ouest",
-        "y": 2.1,
-        "ground": false,
-        "surf": false
-      },
-      {
-        "t": 146.8,
-        "v": 25.4,
-        "sector": "Friches de l'Ouest",
-        "y": 1.2,
-        "ground": false,
-        "surf": false
-      },
-      {
-        "t": 147.8,
-        "v": 1.2,
-        "sector": "Friches de l'Ouest",
-        "y": 2.1,
-        "ground": false,
-        "surf": false
-      },
-      {
-        "t": 148.8,
-        "v": 3.3,
-        "sector": "Friches de l'Ouest",
-        "y": 1.4,
-        "ground": false,
-        "surf": false
-      },
-      {
-        "t": 149.5,
-        "v": 13.3,
-        "sector": "Friches de l'Ouest",
-        "y": 1.2,
-        "ground": false,
-        "surf": false
-      },
-      {
-        "t": 150.5,
-        "v": 23.5,
-        "sector": "Friches de l'Ouest",
-        "y": 1.9,
-        "ground": false,
-        "surf": false
-      },
-      {
-        "t": 151.5,
-        "v": 32.6,
-        "sector": "Friches de l'Ouest",
-        "y": 1.8,
-        "ground": false,
-        "surf": false
-      },
-      {
-        "t": 152.3,
-        "v": 1.5,
-        "sector": "Friches de l'Ouest",
-        "y": 1.6,
-        "ground": false,
-        "surf": false
-      },
-      {
-        "t": 153.3,
-        "v": 15.4,
-        "sector": "Friches de l'Ouest",
-        "y": 1.5,
-        "ground": false,
-        "surf": false
-      },
-      {
-        "t": 154.3,
-        "v": 25.3,
-        "sector": "Friches de l'Ouest",
-        "y": 1.9,
-        "ground": false,
-        "surf": false
-      },
-      {
-        "t": 155.3,
-        "v": 6.2,
-        "sector": "Friches de l'Ouest",
-        "y": 0.6,
-        "ground": true,
-        "surf": false
-      },
-      {
-        "t": 156.3,
-        "v": 15.1,
-        "sector": "Friches de l'Ouest",
-        "y": 1.8,
-        "ground": false,
-        "surf": false
-      },
-      {
-        "t": 157.3,
-        "v": 24.9,
-        "sector": "Friches de l'Ouest",
-        "y": 1.5,
-        "ground": false,
-        "surf": false
-      },
-      {
-        "t": 158.3,
-        "v": 33.7,
-        "sector": "Friches de l'Ouest",
-        "y": 1.2,
-        "ground": false,
-        "surf": false
-      },
-      {
-        "t": 159,
-        "v": 39.9,
-        "sector": "Friches de l'Ouest",
-        "y": 1.4,
-        "ground": false,
-        "surf": false
-      },
-      {
-        "t": 159.8,
-        "v": 45.6,
-        "sector": "Friches de l'Ouest",
-        "y": 1.6,
-        "ground": false,
-        "surf": false
-      },
-      {
-        "t": 160.8,
-        "v": 52.4,
-        "sector": "Friches de l'Ouest",
-        "y": 1.5,
-        "ground": false,
-        "surf": false
-      },
-      {
-        "t": 161.5,
-        "v": 57,
-        "sector": "Friches de l'Ouest",
-        "y": 1.4,
-        "ground": false,
-        "surf": false
-      },
-      {
-        "t": 162.5,
-        "v": 62.6,
-        "sector": "Friches de l'Ouest",
-        "y": 1.4,
-        "ground": false,
-        "surf": false
-      },
-      {
-        "t": 163.3,
-        "v": 8.3,
-        "sector": "Friches de l'Ouest",
-        "y": 1.6,
-        "ground": false,
-        "surf": false
-      },
-      {
-        "t": 164,
-        "v": 16.3,
-        "sector": "Friches de l'Ouest",
-        "y": 1.7,
-        "ground": false,
-        "surf": false
-      },
-      {
-        "t": 165,
-        "v": 26,
-        "sector": "Friches de l'Ouest",
-        "y": 1.5,
-        "ground": false,
-        "surf": false
-      },
-      {
-        "t": 166,
-        "v": 34.7,
-        "sector": "Friches de l'Ouest",
-        "y": 1.6,
-        "ground": false,
-        "surf": false
-      },
-      {
-        "t": 166.8,
-        "v": 40.7,
-        "sector": "Friches de l'Ouest",
-        "y": 1.8,
-        "ground": false,
-        "surf": false
-      },
-      {
-        "t": 167.5,
-        "v": 3,
-        "sector": "Friches de l'Ouest",
-        "y": 2,
-        "ground": false,
-        "surf": false
-      },
-      {
-        "t": 168.5,
-        "v": 11.7,
-        "sector": "Friches de l'Ouest",
-        "y": 1.7,
-        "ground": false,
-        "surf": false
-      },
-      {
-        "t": 169.3,
-        "v": 19.5,
-        "sector": "Friches de l'Ouest",
-        "y": 1.5,
-        "ground": false,
-        "surf": false
-      },
-      {
-        "t": 170.3,
-        "v": 28.7,
-        "sector": "Friches de l'Ouest",
-        "y": 1.7,
-        "ground": false,
-        "surf": false
-      },
-      {
-        "t": 171,
-        "v": 35.2,
-        "sector": "Friches de l'Ouest",
-        "y": 1.8,
-        "ground": false,
-        "surf": false
-      },
-      {
-        "t": 172,
-        "v": 43.2,
-        "sector": "Friches de l'Ouest",
-        "y": 1.7,
-        "ground": false,
-        "surf": false
-      },
-      {
-        "t": 173,
-        "v": 50.3,
-        "sector": "Friches de l'Ouest",
-        "y": 1.2,
-        "ground": false,
-        "surf": false
-      },
-      {
-        "t": 173.8,
-        "v": 55.1,
-        "sector": "Friches de l'Ouest",
-        "y": 1.3,
-        "ground": false,
-        "surf": false
-      },
-      {
-        "t": 174.8,
-        "v": 60.9,
-        "sector": "Friches de l'Ouest",
-        "y": 1.7,
-        "ground": false,
-        "surf": false
-      },
-      {
-        "t": 175.8,
-        "v": 66.2,
-        "sector": "Friches de l'Ouest",
-        "y": 0.5,
-        "ground": false,
-        "surf": false
-      },
-      {
-        "t": 176.5,
-        "v": 69.7,
-        "sector": "Le Gazomètre",
-        "y": 0.3,
-        "ground": false,
-        "surf": false
-      },
-      {
-        "t": 177.5,
-        "v": 74.3,
-        "sector": "Le Gazomètre",
-        "y": 1.5,
-        "ground": false,
-        "surf": false
-      },
-      {
-        "t": 178.3,
-        "v": 77.5,
-        "sector": "Le Gazomètre",
-        "y": 1.7,
-        "ground": false,
-        "surf": false
-      },
-      {
-        "t": 179,
-        "v": 80.7,
-        "sector": "Le Gazomètre",
-        "y": 1.7,
-        "ground": false,
-        "surf": false
-      },
-      {
-        "t": 180,
-        "v": 84.6,
-        "sector": "Le Gazomètre",
-        "y": 1.2,
-        "ground": false,
-        "surf": false
-      },
-      {
-        "t": 181,
-        "v": 6.1,
-        "sector": "Le Gazomètre",
-        "y": 1.9,
-        "ground": false,
-        "surf": false
-      },
-      {
-        "t": 181.8,
-        "v": 2.4,
-        "sector": "Le Gazomètre",
-        "y": 1.9,
-        "ground": false,
-        "surf": false
-      },
-      {
-        "t": 182.8,
-        "v": 2.7,
-        "sector": "Le Gazomètre",
-        "y": 0.8,
-        "ground": false,
-        "surf": false
-      },
-      {
-        "t": 183.8,
-        "v": 17.6,
-        "sector": "Le Gazomètre",
-        "y": 1.9,
-        "ground": false,
-        "surf": false
-      },
-      {
-        "t": 184.5,
-        "v": 24.9,
-        "sector": "Le Gazomètre",
-        "y": 1.9,
-        "ground": false,
-        "surf": false
-      },
-      {
-        "t": 185.5,
-        "v": 33.9,
-        "sector": "Le Gazomètre",
-        "y": 1.3,
-        "ground": false,
-        "surf": false
-      },
-      {
-        "t": 186.5,
-        "v": 41.8,
-        "sector": "Le Gazomètre",
-        "y": 1.8,
-        "ground": false,
-        "surf": false
-      },
-      {
-        "t": 187.5,
-        "v": 49.1,
-        "sector": "Le Gazomètre",
-        "y": 1.8,
-        "ground": false,
-        "surf": false
-      },
-      {
-        "t": 188.5,
-        "v": 3.7,
-        "sector": "Le Gazomètre",
-        "y": 1.5,
-        "ground": false,
-        "surf": false
-      },
-      {
-        "t": 189.5,
-        "v": 2.9,
-        "sector": "Le Gazomètre",
-        "y": 2.1,
-        "ground": false,
-        "surf": false
-      },
-      {
-        "t": 190.5,
-        "v": 14.1,
-        "sector": "Le Gazomètre",
-        "y": 1.1,
-        "ground": false,
-        "surf": false
-      },
-      {
-        "t": 191.5,
-        "v": 24.1,
-        "sector": "Le Gazomètre",
-        "y": 2,
-        "ground": false,
-        "surf": false
-      },
-      {
-        "t": 192.5,
-        "v": 33.2,
-        "sector": "Le Gazomètre",
-        "y": 1.6,
-        "ground": false,
-        "surf": false
-      },
-      {
-        "t": 193.8,
-        "v": 43.1,
-        "sector": "Friches du Sud",
-        "y": 2,
-        "ground": false,
-        "surf": false
-      },
-      {
-        "t": 194.8,
-        "v": 5.6,
-        "sector": "Friches du Sud",
-        "y": 0.8,
-        "ground": true,
-        "surf": false
-      },
-      {
-        "t": 195.5,
-        "v": 10.5,
-        "sector": "Friches du Sud",
-        "y": 2.1,
-        "ground": false,
-        "surf": false
-      },
-      {
-        "t": 196.8,
-        "v": 23.2,
-        "sector": "Friches du Sud",
-        "y": 2,
-        "ground": false,
-        "surf": false
-      },
-      {
-        "t": 198,
-        "v": 3.8,
-        "sector": "Friches du Sud",
-        "y": 1.5,
-        "ground": false,
-        "surf": false
-      },
-      {
-        "t": 199,
-        "v": 11.2,
-        "sector": "Friches du Sud",
-        "y": 2.3,
-        "ground": false,
-        "surf": false
-      },
-      {
-        "t": 200.3,
-        "v": 23.8,
-        "sector": "Friches du Sud",
-        "y": 2.1,
-        "ground": false,
-        "surf": false
-      },
-      {
-        "t": 201,
-        "v": 30.7,
-        "sector": "Friches du Sud",
-        "y": 2.2,
-        "ground": false,
-        "surf": false
-      },
-      {
-        "t": 202,
-        "v": 38,
-        "sector": "Friches du Sud",
-        "y": 2,
-        "ground": false,
-        "surf": false
-      },
-      {
-        "t": 203,
-        "v": 45.5,
-        "sector": "Friches du Sud",
-        "y": 2,
-        "ground": false,
-        "surf": false
-      },
-      {
-        "t": 204,
-        "v": 52.4,
-        "sector": "Friches du Sud",
-        "y": 2.4,
-        "ground": false,
-        "surf": false
-      },
-      {
-        "t": 205,
-        "v": 3.1,
-        "sector": "Friches du Sud",
-        "y": 1.7,
-        "ground": false,
-        "surf": false
-      },
-      {
-        "t": 206,
-        "v": 11,
-        "sector": "Friches du Sud",
-        "y": 2.6,
-        "ground": false,
-        "surf": false
-      },
-      {
-        "t": 207.3,
-        "v": 23.6,
-        "sector": "Friches du Sud",
-        "y": 2.3,
-        "ground": false,
-        "surf": false
-      },
-      {
-        "t": 208.3,
-        "v": 32.7,
-        "sector": "Friches du Sud",
-        "y": 2.5,
-        "ground": false,
-        "surf": false
-      },
-      {
-        "t": 209.3,
-        "v": 40.7,
-        "sector": "Friches du Sud",
-        "y": 1.8,
-        "ground": false,
-        "surf": false
-      },
-      {
-        "t": 210.3,
-        "v": 48.1,
-        "sector": "Friches du Sud",
-        "y": 2.6,
-        "ground": false,
-        "surf": false
-      },
-      {
-        "t": 211.3,
-        "v": 54.7,
-        "sector": "Friches du Sud",
-        "y": 1.6,
+        "t": 64,
+        "v": 136.1,
+        "sector": "La Boucle",
+        "y": 71.4,
         "ground": false,
         "surf": false
       }
@@ -2068,1648 +849,355 @@
       {
         "nom": "Le Belvédère",
         "entree": 0,
-        "max": 26
+        "max": 18
       },
       {
         "nom": "Grand Viaduc",
-        "entree": 28,
-        "max": 42
-      },
-      {
-        "nom": "Le Terril",
-        "entree": 42,
+        "entree": 19,
         "max": 73
-      },
-      {
-        "nom": "Friches du Nord",
-        "entree": 24,
-        "max": 47
       },
       {
         "nom": "Le Belvédère",
         "entree": 0,
-        "max": 26
+        "max": 18
       },
       {
         "nom": "Grand Viaduc",
-        "entree": 28,
-        "max": 40
+        "entree": 17,
+        "max": 116
       },
       {
-        "nom": "Le Terril",
-        "entree": 38,
-        "max": 87
+        "nom": "Échangeur de la Darse",
+        "entree": 116,
+        "max": 118
       },
       {
-        "nom": "Friches du Nord",
-        "entree": 79,
-        "max": 86
-      },
-      {
-        "nom": "Friches de l'Ouest",
-        "entree": 15,
-        "max": 53
-      },
-      {
-        "nom": "Friches du Nord",
-        "entree": 53,
-        "max": 67
-      },
-      {
-        "nom": "Friches de l'Ouest",
+        "nom": "La Boucle",
         "entree": 24,
-        "max": 51
+        "max": 136
       },
       {
-        "nom": "Docks de la Darse",
-        "entree": 19,
-        "max": 32
-      },
-      {
-        "nom": "Friches de l'Ouest",
-        "entree": 35,
-        "max": 69
-      },
-      {
-        "nom": "Le Gazomètre",
-        "entree": 69,
-        "max": 88
-      },
-      {
-        "nom": "Friches du Sud",
-        "entree": 40,
-        "max": 58
+        "nom": "Échangeur du Gazomètre",
+        "entree": 137,
+        "max": 137
       }
     ]
   },
   "turn": [
     {
       "t": 1,
-      "v": 19,
-      "sector": "Friches du Sud",
-      "x": -575,
-      "z": 1763
+      "v": 15,
+      "sector": "La Boucle",
+      "x": -1018,
+      "z": 1337
     },
     {
       "t": 2,
-      "v": 28.3,
-      "sector": "Friches du Sud",
-      "x": -585,
-      "z": 1742
+      "v": 20.2,
+      "sector": "La Boucle",
+      "x": -1032,
+      "z": 1327
     },
     {
-      "t": 2.8,
-      "v": 34.8,
-      "sector": "Friches du Sud",
-      "x": -601,
-      "z": 1727
-    },
-    {
-      "t": 3.5,
-      "v": 40.8,
-      "sector": "Friches du Sud",
-      "x": -624,
-      "z": 1711
+      "t": 3,
+      "v": 25.5,
+      "sector": "La Boucle",
+      "x": -1049,
+      "z": 1311
     },
     {
       "t": 4,
-      "v": 44.7,
-      "sector": "Friches du Sud",
-      "x": -640,
-      "z": 1699
+      "v": 30.3,
+      "sector": "La Boucle",
+      "x": -1066,
+      "z": 1290
     },
     {
-      "t": 4.8,
-      "v": 50,
-      "sector": "Friches du Sud",
-      "x": -669,
-      "z": 1681
+      "t": 5,
+      "v": 34.8,
+      "sector": "La Boucle",
+      "x": -1085,
+      "z": 1264
     },
     {
-      "t": 5.5,
-      "v": 54.8,
-      "sector": "Friches du Sud",
-      "x": -703,
-      "z": 1664
-    },
-    {
-      "t": 6.3,
-      "v": 3.7,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1653
+      "t": 6,
+      "v": 39.4,
+      "sector": "Échangeur du Gazomètre",
+      "x": -1108,
+      "z": 1235
     },
     {
       "t": 7,
-      "v": 2.5,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
-    },
-    {
-      "t": 7.5,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
+      "v": 43.8,
+      "sector": "Échangeur du Gazomètre",
+      "x": -1133,
+      "z": 1202
     },
     {
       "t": 8,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
-    },
-    {
-      "t": 8.5,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
+      "v": 48.2,
+      "sector": "Échangeur du Gazomètre",
+      "x": -1162,
+      "z": 1167
     },
     {
       "t": 9,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
-    },
-    {
-      "t": 9.5,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
+      "v": 52.6,
+      "sector": "Échangeur du Gazomètre",
+      "x": -1196,
+      "z": 1130
     },
     {
       "t": 10,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
-    },
-    {
-      "t": 10.5,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
+      "v": 56.9,
+      "sector": "La Boucle",
+      "x": -1236,
+      "z": 1093
     },
     {
       "t": 11,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
+      "v": 61,
+      "sector": "La Boucle",
+      "x": -1281,
+      "z": 1056
     },
     {
-      "t": 11.8,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
-    },
-    {
-      "t": 12.5,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
+      "t": 12,
+      "v": 64.9,
+      "sector": "La Boucle",
+      "x": -1329,
+      "z": 1016
     },
     {
       "t": 13,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
-    },
-    {
-      "t": 13.5,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
+      "v": 68.9,
+      "sector": "La Boucle",
+      "x": -1381,
+      "z": 974
     },
     {
       "t": 14,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
-    },
-    {
-      "t": 14.5,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
+      "v": 72.7,
+      "sector": "La Boucle",
+      "x": -1436,
+      "z": 930
     },
     {
       "t": 15,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
+      "v": 76.5,
+      "sector": "La Boucle",
+      "x": -1494,
+      "z": 885
     },
     {
-      "t": 15.5,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
-    },
-    {
-      "t": 16.5,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
+      "t": 16,
+      "v": 80.1,
+      "sector": "La Boucle",
+      "x": -1550,
+      "z": 831
     },
     {
       "t": 17,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
+      "v": 83.7,
+      "sector": "La Boucle",
+      "x": -1604,
+      "z": 770
     },
     {
-      "t": 18.3,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
+      "t": 18,
+      "v": 87.2,
+      "sector": "La Boucle",
+      "x": -1658,
+      "z": 704
     },
     {
       "t": 19,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
+      "v": 90.6,
+      "sector": "La Boucle",
+      "x": -1705,
+      "z": 630
     },
     {
       "t": 20,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
+      "v": 93.9,
+      "sector": "La Boucle",
+      "x": -1756,
+      "z": 553
     },
     {
       "t": 21,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
+      "v": 97.3,
+      "sector": "La Boucle",
+      "x": -1805,
+      "z": 472
     },
     {
       "t": 22,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
+      "v": 100.5,
+      "sector": "La Boucle",
+      "x": -1849,
+      "z": 384
     },
     {
       "t": 23,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
+      "v": 103.7,
+      "sector": "La Boucle",
+      "x": -1890,
+      "z": 292
     },
     {
       "t": 24,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
+      "v": 106.8,
+      "sector": "La Boucle",
+      "x": -1926,
+      "z": 194
     },
     {
       "t": 25,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
+      "v": 109.9,
+      "sector": "La Boucle",
+      "x": -1953,
+      "z": 90
     },
     {
-      "t": 25.8,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
+      "t": 26,
+      "v": 110,
+      "sector": "La Boucle",
+      "x": -1961,
+      "z": -20
     },
     {
-      "t": 26.8,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
+      "t": 27,
+      "v": 109.9,
+      "sector": "La Boucle",
+      "x": -1958,
+      "z": -130
     },
     {
-      "t": 27.8,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
+      "t": 28,
+      "v": 110,
+      "sector": "La Boucle",
+      "x": -1941,
+      "z": -238
     },
     {
-      "t": 28.8,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
+      "t": 29,
+      "v": 110,
+      "sector": "La Boucle",
+      "x": -1912,
+      "z": -345
     },
     {
-      "t": 29.5,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
+      "t": 30,
+      "v": 110,
+      "sector": "La Boucle",
+      "x": -1879,
+      "z": -449
     },
     {
-      "t": 30.5,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
+      "t": 31,
+      "v": 110,
+      "sector": "La Boucle",
+      "x": -1839,
+      "z": -552
     },
     {
-      "t": 31.5,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
+      "t": 32,
+      "v": 110,
+      "sector": "La Boucle",
+      "x": -1792,
+      "z": -651
     },
     {
-      "t": 32.5,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
+      "t": 33,
+      "v": 110,
+      "sector": "La Boucle",
+      "x": -1744,
+      "z": -750
     },
     {
-      "t": 33.5,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
+      "t": 34,
+      "v": 110,
+      "sector": "La Boucle",
+      "x": -1686,
+      "z": -843
     },
     {
-      "t": 34.5,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
+      "t": 35,
+      "v": 110,
+      "sector": "La Boucle",
+      "x": -1624,
+      "z": -934
     },
     {
-      "t": 35.5,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
-    },
-    {
-      "t": 36.3,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
+      "t": 36,
+      "v": 110,
+      "sector": "La Boucle",
+      "x": -1553,
+      "z": -1018
     },
     {
       "t": 37,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
+      "v": 110,
+      "sector": "La Boucle",
+      "x": -1481,
+      "z": -1101
     },
     {
-      "t": 37.5,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
-    },
-    {
-      "t": 38,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
+      "t": 37.8,
+      "v": 110,
+      "sector": "La Boucle",
+      "x": -1425,
+      "z": -1162
     },
     {
       "t": 38.8,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
-    },
-    {
-      "t": 39.3,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
+      "v": 110,
+      "sector": "Échangeur de la Darse",
+      "x": -1348,
+      "z": -1240
     },
     {
       "t": 39.8,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
-    },
-    {
-      "t": 40.3,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
-    },
-    {
-      "t": 41,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
-    },
-    {
-      "t": 41.5,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
-    },
-    {
-      "t": 42,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
-    },
-    {
-      "t": 42.5,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
-    },
-    {
-      "t": 43.3,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
-    },
-    {
-      "t": 43.8,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
-    },
-    {
-      "t": 44.3,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
-    },
-    {
-      "t": 45,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
-    },
-    {
-      "t": 45.5,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
-    },
-    {
-      "t": 46,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
-    },
-    {
-      "t": 46.5,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
-    },
-    {
-      "t": 47,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
-    },
-    {
-      "t": 47.5,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
-    },
-    {
-      "t": 48,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
-    },
-    {
-      "t": 48.5,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
-    },
-    {
-      "t": 49,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
-    },
-    {
-      "t": 49.5,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
-    },
-    {
-      "t": 50,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
-    },
-    {
-      "t": 50.8,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
-    },
-    {
-      "t": 51.3,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
-    },
-    {
-      "t": 52,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
-    },
-    {
-      "t": 52.5,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
-    },
-    {
-      "t": 53,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
-    },
-    {
-      "t": 53.5,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
-    },
-    {
-      "t": 54,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
-    },
-    {
-      "t": 54.8,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
-    },
-    {
-      "t": 55.3,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
-    },
-    {
-      "t": 55.8,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
-    },
-    {
-      "t": 56.3,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
-    },
-    {
-      "t": 57,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
-    },
-    {
-      "t": 57.5,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
-    },
-    {
-      "t": 58.3,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
-    },
-    {
-      "t": 58.8,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
-    },
-    {
-      "t": 59.5,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
-    },
-    {
-      "t": 60,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
-    },
-    {
-      "t": 60.5,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
-    },
-    {
-      "t": 61,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
-    },
-    {
-      "t": 61.5,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
-    },
-    {
-      "t": 62,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
-    },
-    {
-      "t": 62.8,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
-    },
-    {
-      "t": 63.3,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
-    },
-    {
-      "t": 63.8,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
-    },
-    {
-      "t": 64.3,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
-    },
-    {
-      "t": 65,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
-    },
-    {
-      "t": 65.8,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
-    },
-    {
-      "t": 66.8,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
-    },
-    {
-      "t": 67.8,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
-    },
-    {
-      "t": 68.8,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
-    },
-    {
-      "t": 69.8,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
-    },
-    {
-      "t": 70.8,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
-    },
-    {
-      "t": 71.8,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
-    },
-    {
-      "t": 72.8,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
-    },
-    {
-      "t": 73.8,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
-    },
-    {
-      "t": 74.8,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
-    },
-    {
-      "t": 75.5,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
-    },
-    {
-      "t": 76.3,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
-    },
-    {
-      "t": 77.3,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
-    },
-    {
-      "t": 78.3,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
-    },
-    {
-      "t": 79.3,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
-    },
-    {
-      "t": 80.3,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
-    },
-    {
-      "t": 81.3,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
-    },
-    {
-      "t": 82.3,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
-    },
-    {
-      "t": 83.3,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
-    },
-    {
-      "t": 84.3,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
-    },
-    {
-      "t": 85.3,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
-    },
-    {
-      "t": 86.3,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
-    },
-    {
-      "t": 87.3,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
-    },
-    {
-      "t": 88,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
-    },
-    {
-      "t": 89,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
-    },
-    {
-      "t": 90,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
-    },
-    {
-      "t": 90.8,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
-    },
-    {
-      "t": 91.8,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
-    },
-    {
-      "t": 92.8,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
-    },
-    {
-      "t": 93.8,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
-    },
-    {
-      "t": 94.8,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
-    },
-    {
-      "t": 95.8,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
-    },
-    {
-      "t": 96.5,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
-    },
-    {
-      "t": 97.5,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
-    },
-    {
-      "t": 98.3,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
-    },
-    {
-      "t": 99.3,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
-    },
-    {
-      "t": 100,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
-    },
-    {
-      "t": 101,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
-    },
-    {
-      "t": 102,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
-    },
-    {
-      "t": 102.8,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
-    },
-    {
-      "t": 103.5,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
-    },
-    {
-      "t": 104.5,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
-    },
-    {
-      "t": 105.5,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
-    },
-    {
-      "t": 106.5,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
-    },
-    {
-      "t": 107.3,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
-    },
-    {
-      "t": 108.3,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
-    },
-    {
-      "t": 109.3,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
-    },
-    {
-      "t": 110.3,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
-    },
-    {
-      "t": 111.3,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
-    },
-    {
-      "t": 112,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
-    },
-    {
-      "t": 113,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
-    },
-    {
-      "t": 114,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
-    },
-    {
-      "t": 115,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
-    },
-    {
-      "t": 116,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
-    },
-    {
-      "t": 117,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
-    },
-    {
-      "t": 118,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
-    },
-    {
-      "t": 118.8,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
-    },
-    {
-      "t": 119.8,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
-    },
-    {
-      "t": 120.8,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
-    },
-    {
-      "t": 121.8,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
-    },
-    {
-      "t": 122.8,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
-    },
-    {
-      "t": 123.5,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
-    },
-    {
-      "t": 124.5,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
-    },
-    {
-      "t": 125.5,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
-    },
-    {
-      "t": 126.5,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
-    },
-    {
-      "t": 127.3,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
-    },
-    {
-      "t": 128.3,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
-    },
-    {
-      "t": 129.3,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
-    },
-    {
-      "t": 130.3,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
-    },
-    {
-      "t": 131.3,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
-    },
-    {
-      "t": 132.3,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
-    },
-    {
-      "t": 133.3,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
-    },
-    {
-      "t": 134.3,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
-    },
-    {
-      "t": 135.3,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
-    },
-    {
-      "t": 136.3,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
-    },
-    {
-      "t": 137.3,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
-    },
-    {
-      "t": 138,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
-    },
-    {
-      "t": 139,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
-    },
-    {
-      "t": 139.8,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
-    },
-    {
-      "t": 140.8,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
-    },
-    {
-      "t": 141.8,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
-    },
-    {
-      "t": 142.8,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
-    },
-    {
-      "t": 143.8,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
-    },
-    {
-      "t": 144.8,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
-    },
-    {
-      "t": 145.8,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
-    },
-    {
-      "t": 146.8,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
-    },
-    {
-      "t": 147.8,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
-    },
-    {
-      "t": 148.8,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
-    },
-    {
-      "t": 149.8,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
-    },
-    {
-      "t": 150.8,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
-    },
-    {
-      "t": 151.5,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
-    },
-    {
-      "t": 152.5,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
-    },
-    {
-      "t": 153.5,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
-    },
-    {
-      "t": 154.5,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
-    },
-    {
-      "t": 155.5,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
-    },
-    {
-      "t": 156.5,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
-    },
-    {
-      "t": 157.5,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
-    },
-    {
-      "t": 158.5,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
-    },
-    {
-      "t": 159.5,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
-    },
-    {
-      "t": 160.5,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
-    },
-    {
-      "t": 161.5,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
-    },
-    {
-      "t": 162.5,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
-    },
-    {
-      "t": 163.5,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
-    },
-    {
-      "t": 164.3,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
-    },
-    {
-      "t": 165.3,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
-    },
-    {
-      "t": 166.3,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
-    },
-    {
-      "t": 167.3,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
-    },
-    {
-      "t": 168.3,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
-    },
-    {
-      "t": 169.3,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
-    },
-    {
-      "t": 170.3,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
-    },
-    {
-      "t": 171,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
-    },
-    {
-      "t": 172,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
-    },
-    {
-      "t": 173,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
-    },
-    {
-      "t": 174,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
-    },
-    {
-      "t": 175,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
-    },
-    {
-      "t": 176,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
-    },
-    {
-      "t": 177,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
-    },
-    {
-      "t": 177.8,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
-    },
-    {
-      "t": 179,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
-    },
-    {
-      "t": 180,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
-    },
-    {
-      "t": 181,
-      "v": 0,
-      "sector": "Friches du Sud",
-      "x": -733,
-      "z": 1654
+      "v": 111.2,
+      "sector": "Grand Viaduc",
+      "x": -1252,
+      "z": -1248
     }
   ],
   "frame": {
-    "fps": 1.395478649176713,
-    "p50": 516.6000000000931,
-    "p95": 783.3000000000466
+    "fps": 2.571575518601114,
+    "p50": 533.3000000000466,
+    "p95": 766.6999999999534
   },
   "final": {
     "state": "playing",
     "pos": {
-      "x": 1422.8860320919712,
-      "y": 0.700001596711664,
-      "z": -1502.9528792011522
+      "x": 1457.9378457847274,
+      "y": 24.72601152207556,
+      "z": -1526.8413705478063
     },
     "vel": {
-      "x": -8.091925166925996,
-      "y": 4.7611434727029405e-78,
-      "z": -8.154335725091322
+      "x": 43.116597072201415,
+      "y": 5.843400647895497,
+      "z": -65.67720089866017
     },
-    "speed": 11.487926010583065,
-    "hspeed": 11.487926010583065,
-    "onGround": true,
+    "speed": 78.78249165964074,
+    "hspeed": 78.56548644900975,
+    "onGround": false,
     "surfing": false,
     "sliding": false,
     "braking": false,
-    "yaw": 2.0637425465847365,
+    "yaw": -0.5503733958812038,
     "stats": {
-      "jumps": 338,
-      "bhops": 327,
-      "chain": 8,
-      "maxChain": 72,
-      "distance": 9945.616595771273,
+      "jumps": 196,
+      "bhops": 191,
+      "chain": 12,
+      "maxChain": 94,
+      "distance": 12406.37604967432,
       "topSpeed": 400,
-      "ticks": 62760,
-      "wallHits": 47,
+      "ticks": 27600,
+      "wallHits": 7,
       "respawns": 0
     },
     "sector": "Hauts-Fourneaux",
@@ -3718,28 +1206,28 @@
       "t": 4.5,
       "weight": 0
     },
-    "fps": 2.0225173599406094,
+    "fps": 2.571575518601114,
     "quality": "low",
     "gpu": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
     "stream": {
-      "loads": 128,
-      "unloads": 102,
+      "loads": 151,
+      "unloads": 121,
       "misses": 0,
       "lateMs": 0,
-      "buildMs": 166.49999999720603,
-      "maxBuildMs": 7.7000000001862645,
-      "loaded": 26,
+      "buildMs": 224.20000000391155,
+      "maxBuildMs": 24.90000000037253,
+      "loaded": 30,
       "grace": 0
     },
     "pen": {
-      "max": 0,
+      "max": 0.0006781515103853053,
       "over5cm": 0,
-      "checks": 62760
+      "checks": 27600
     },
     "locked": true,
     "dragLook": false,
-    "calls": 207,
-    "tris": 166270
+    "calls": 115,
+    "tris": 114792
   },
-  "ok": false
+  "ok": true
 }

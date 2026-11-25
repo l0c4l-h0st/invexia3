@@ -1,0 +1,101 @@
+[
+ {
+  "name": "Auto détecte le rendu logiciel et part en « Très basse »",
+  "ok": true,
+  "detail": {
+   "choix": "auto",
+   "niveau": "min",
+   "ombres": false,
+   "densitePixels": 0.6
+  }
+ },
+ {
+  "name": "Les 4 niveaux s’appliquent en direct (ombres, densité de pixels, brume, particules)",
+  "ok": true,
+  "detail": [
+   {
+    "niveau": "high",
+    "imagesParS": 0.74,
+    "msMediane": 383,
+    "ombres": true,
+    "densitePixels": 1.5,
+    "tampon": "1920×1080",
+    "particulesMax": 700,
+    "brume": 0.00034
+   },
+   {
+    "niveau": "medium",
+    "imagesParS": 1.22,
+    "msMediane": 817,
+    "ombres": true,
+    "densitePixels": 1,
+    "tampon": "1280×720",
+    "particulesMax": 700,
+    "brume": 0.00034
+   },
+   {
+    "niveau": "low",
+    "imagesParS": 1.79,
+    "msMediane": 767,
+    "ombres": false,
+    "densitePixels": 0.75,
+    "tampon": "960×540",
+    "particulesMax": 320,
+    "brume": 0.000391
+   },
+   {
+    "niveau": "min",
+    "imagesParS": 2.69,
+    "msMediane": 517,
+    "ombres": false,
+    "densitePixels": 0.6,
+    "tampon": "768×432",
+    "particulesMax": 120,
+    "brume": 0.000493
+   }
+  ]
+ },
+ {
+  "name": "« Très basse » plus rapide que « Haute » (rendu logiciel)",
+  "ok": true,
+  "detail": {
+   "haute": 0.74,
+   "tresBasse": 2.69,
+   "gain": 3.64
+  }
+ },
+ {
+  "name": "Curseur de résolution à 50 % : tampon de rendu divisé par deux",
+  "ok": true,
+  "detail": {
+   "tampon": "384×216",
+   "avant": "768×432"
+  }
+ },
+ {
+  "name": "Mode Auto : baisse la qualité tout seul quand les images/s restent sous 38",
+  "ok": true,
+  "detail": {
+   "avant": "medium",
+   "apres": "min",
+   "crans": 2,
+   "resolution": 1
+  }
+ },
+ {
+  "name": "F1 → Graphismes : niveau marqué et résumé affiché",
+  "ok": true,
+  "detail": {
+   "on": [
+    "low"
+   ],
+   "note": "Basse : ombres non, densité de pixels ×0.75, résolution 100 %, portée 85 %.",
+   "select": "low"
+  }
+ },
+ {
+  "name": "Aucune erreur JavaScript",
+  "ok": true,
+  "detail": []
+ }
+]

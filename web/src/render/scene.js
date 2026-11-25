@@ -8,22 +8,39 @@ import { fbm2 } from '../core/noise.js';
 
 export const SUN_DIR = new THREE.Vector3(-0.86, 0.2, 0.36).normalize(); // ouest-sud-ouest, bas sur l'horizon
 const FOG_COLOR = new THREE.Color(0x8a6f63);
+const FOG_DENSITY = 0.00034;
+
+/**
+ * Niveaux de qualité. Tout s'applique en direct, sauf le lissage (aa), qui
+ * dépend du contexte WebGL et ne change qu'au prochain chargement.
+ * pr : plafond de densité de pixels · view : portée du chargement progressif
+ * fog : épaisseur de la brume (masque la portée réduite) · lod : distance du terrain détaillé.
+ */
+export const QUALITY = {
+  min: { label: 'Très basse', pr: 0.6, aa: false, shadows: 0, view: 0.7, fog: 1.45, particles: 120, lod: 750, flames: false },
+  low: { label: 'Basse', pr: 0.75, aa: false, shadows: 0, view: 0.85, fog: 1.15, particles: 320, lod: 1000, flames: true },
+  medium: { label: 'Moyenne', pr: 1, aa: true, shadows: 1024, view: 1, fog: 1, particles: 700, lod: 1300, flames: true },
+  high: { label: 'Haute', pr: 1.5, aa: true, shadows: 2048, view: 1.15, fog: 1, particles: 700, lod: 1600, flames: true },
+};
+export const QUALITY_ORDER = ['min', 'low', 'medium', 'high'];
 
 export class WorldRenderer {
   constructor(canvas, quality) {
+    if (!QUALITY[quality]) quality = 'medium';
     this.quality = quality;
-    const hi = quality === 'high', lo = quality === 'low';
-    this.renderer = new THREE.WebGLRenderer({ canvas, antialias: !lo, powerPreference: 'high-performance', stencil: false });
+    this.Q = QUALITY[quality];
+    this.aa = this.Q.aa;
+    this.renderer = new THREE.WebGLRenderer({ canvas, antialias: this.aa, powerPreference: 'high-performance', stencil: false });
     this.renderer.outputColorSpace = THREE.SRGBColorSpace;
     this.renderer.toneMapping = THREE.ACESFilmicToneMapping;
     this.renderer.toneMappingExposure = 1.05;
     this.renderer.autoClear = false;
     this.renderer.info.autoReset = false;
-    this.renderer.shadowMap.enabled = !lo;
+    this.renderer.shadowMap.enabled = this.Q.shadows > 0;
     this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-    this.pixelRatioCap = hi ? 1.5 : lo ? 0.75 : 1;
+    this.pixelRatioCap = this.Q.pr;
     this.scene = new THREE.Scene();
-    this.scene.fog = new THREE.FogExp2(FOG_COLOR, 0.00034);
+    this.scene.fog = new THREE.FogExp2(FOG_COLOR, FOG_DENSITY * this.Q.fog);
     this.camera = new THREE.PerspectiveCamera(70, 16 / 9, 0.3, 12000);
     this.tex = makeTextures(Math.min(8, this.renderer.capabilities.getMaxAnisotropy()));
     this.time = 0;
@@ -34,6 +51,7 @@ export class WorldRenderer {
   }
 
   resize(w, h, scale = 1) {
+    this._size = [w, h, scale];
     this.renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, this.pixelRatioCap) * scale);
     this.renderer.setSize(w, h, false);
     this.camera.aspect = w / h;
@@ -85,13 +103,12 @@ export class WorldRenderer {
     this.sun = new THREE.DirectionalLight(0xffc48c, 2.7);
     this.sun.position.copy(SUN_DIR).multiplyScalar(400);
     this.sun.castShadow = this.renderer.shadowMap.enabled;
-    if (this.sun.castShadow) {
-      const s = this.sun.shadow;
-      s.mapSize.set(this.quality === 'high' ? 2048 : 1024, this.quality === 'high' ? 2048 : 1024);
-      s.camera.left = -110; s.camera.right = 110; s.camera.top = 110; s.camera.bottom = -110;
-      s.camera.near = 10; s.camera.far = 1200;
-      s.bias = -0.0006; s.normalBias = 0.6;
-    }
+    const s = this.sun.shadow;
+    const ms = this.Q.shadows || 1024;
+    s.mapSize.set(ms, ms);
+    s.camera.left = -110; s.camera.right = 110; s.camera.top = 110; s.camera.bottom = -110;
+    s.camera.near = 10; s.camera.far = 1200;
+    s.bias = -0.0006; s.normalBias = 0.6;
     this.scene.add(this.sun);
     this.scene.add(this.sun.target);
   }
@@ -278,7 +295,7 @@ export class WorldRenderer {
   /** Chargement progressif autour du joueur et dans la direction de sa vitesse. */
   updateStreaming(pos, vel, budgetMs = 6, force = false) {
     const sp = Math.hypot(vel.x, vel.z);
-    const L = 1500 + Math.min(1600, sp * 5);
+    const L = (1500 + Math.min(1600, sp * 5)) * this.Q.view;
     const px = pos.x + vel.x * 4, pz = pos.z + vel.z * 4;
     let want = [];
     for (const c of this.chunkList) {
@@ -310,7 +327,7 @@ export class WorldRenderer {
     // niveaux de détail du terrain
     for (const t of this.tiles) {
       const d = Math.hypot(t.cx - pos.x, t.cz - pos.z);
-      const near = d < 1300;
+      const near = d < this.Q.lod;
       t.lods[0].visible = near; t.lods[1].visible = !near;
     }
   }
@@ -409,7 +426,7 @@ export class WorldRenderer {
     // fumées : particules en billboard
     this.emitters = list.filter((f) => f.type === 'smoke' || f.type === 'steam').map((f) => ({ ...f, acc: Math.random() }));
     const MAX = 700;
-    this.pMax = MAX;
+    this.pMax = Math.min(MAX, this.Q.particles);
     const pg = new THREE.InstancedBufferGeometry();
     pg.setAttribute('position', new THREE.Float32BufferAttribute([-0.5, -0.5, 0, 0.5, -0.5, 0, 0.5, 0.5, 0, -0.5, 0.5, 0], 3));
     pg.setAttribute('uv', new THREE.Float32BufferAttribute([0, 0, 1, 0, 1, 1, 0, 1], 2));
@@ -422,9 +439,9 @@ export class WorldRenderer {
     this.pGeo = pg;
     const pm = new THREE.ShaderMaterial({
       transparent: true, depthWrite: false,
-      uniforms: { map: { value: this.tex.puff }, fogColor: { value: FOG_COLOR }, fogDensity: { value: 0.00034 } },
-      vertexShader: `attribute vec4 offset; attribute vec4 pcol; varying vec2 vUv; varying vec4 vC; varying float vFog;
-        void main(){ vUv = uv; vC = pcol; vec4 mv = viewMatrix * vec4(offset.xyz, 1.0); mv.xy += position.xy * offset.w; float d = -mv.z; vFog = 1.0 - exp(-pow(d * 0.00034 * 0.8, 2.0)); gl_Position = projectionMatrix * mv; }`,
+      uniforms: { map: { value: this.tex.puff }, fogColor: { value: FOG_COLOR }, fogDensity: { value: FOG_DENSITY * this.Q.fog } },
+      vertexShader: `attribute vec4 offset; attribute vec4 pcol; uniform float fogDensity; varying vec2 vUv; varying vec4 vC; varying float vFog;
+        void main(){ vUv = uv; vC = pcol; vec4 mv = viewMatrix * vec4(offset.xyz, 1.0); mv.xy += position.xy * offset.w; float d = -mv.z; vFog = 1.0 - exp(-pow(d * fogDensity * 0.8, 2.0)); gl_Position = projectionMatrix * mv; }`,
       fragmentShader: `uniform sampler2D map; uniform vec3 fogColor; varying vec2 vUv; varying vec4 vC; varying float vFog;
         void main(){ vec4 t = texture2D(map, vUv); vec3 c = mix(vC.rgb, fogColor, vFog); gl_FragColor = vec4(c, t.a * vC.a); }`,
     });
@@ -494,6 +511,32 @@ export class WorldRenderer {
     const tx = Math.round(target.x / step) * step, tz = Math.round(target.z / step) * step;
     this.sun.target.position.set(tx, target.y, tz);
     this.sun.position.set(tx + SUN_DIR.x * 500, target.y + SUN_DIR.y * 500, tz + SUN_DIR.z * 500);
+  }
+
+  /** Change la qualité en direct (le lissage attend le prochain chargement). */
+  setQuality(level) {
+    const Q = QUALITY[level];
+    if (!Q) return;
+    this.quality = level; this.Q = Q;
+    this.pixelRatioCap = Q.pr;
+    if (this._size) this.resize(...this._size);
+    const sh = Q.shadows > 0;
+    if (sh !== this.renderer.shadowMap.enabled) {
+      this.renderer.shadowMap.enabled = sh;
+      this.sun.castShadow = sh;
+      // les shaders dépendent de la présence d'ombres : recompilation
+      this.scene.traverse((o) => { if (o.material) for (const m of [].concat(o.material)) m.needsUpdate = true; });
+    }
+    const s = this.sun.shadow;
+    if (sh && s.mapSize.x !== Q.shadows) {
+      s.mapSize.set(Q.shadows, Q.shadows);
+      if (s.map) { s.map.dispose(); s.map = null; }
+    }
+    this.scene.fog.density = FOG_DENSITY * Q.fog;
+    if (this.particles) this.particles.material.uniforms.fogDensity.value = FOG_DENSITY * Q.fog;
+    this.pMax = Math.min(700, Q.particles);
+    if (this.parts && this.parts.length > this.pMax) this.parts.length = this.pMax;
+    if (this.flames) for (const f of this.flames) f.grp.visible = Q.flames;
   }
 
   render() {

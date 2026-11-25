@@ -51,6 +51,7 @@ export const DEFAULT_SETTINGS = {
   bob: 0.7,             // balancement 0..1
   speedLines: true,
   volume: 0.8,
-  quality: 'auto',      // 'low' | 'medium' | 'high' | 'auto'
+  quality: 'auto',      // 'min' | 'low' | 'medium' | 'high' | 'auto' (s'adapte aux images/s)
+  renderScale: 1,       // résolution de rendu 0,5..1
   showHelp: true,
 };

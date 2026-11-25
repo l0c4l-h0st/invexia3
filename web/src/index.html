@@ -99,6 +99,7 @@ html, body { height: 100%; margin: 0; background: #0f1012; color: var(--ink); fo
 .note strong { color: var(--ash); font-weight: 600; }
 .warn { color: var(--ember); font-size: 13px; }
 .row2 { display: flex; flex-wrap: wrap; gap: 4px 22px; }
+#qbtns { gap: 8px; }
 @media (max-width: 900px) { #help { font-size: 11px; width: min(260px, 42vw); } #help li { grid-template-columns: minmax(0, 1fr); gap: 0; } #help .foot { display: none; } }
 @media (max-width: 700px) { .screen .col { padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); } #compass { width: 260px; } .set { grid-template-columns: 110px 1fr 40px; } }
 @media (prefers-reduced-motion: reduce) { .btn::before, #toast, #help, #sector { transition: none; } }
@@ -180,7 +181,8 @@ html, body { height: 100%; margin: 0; background: #0f1012; color: var(--ink); fo
         <label class="set">Lignes de vitesse <input type="checkbox" id="s-lines"><span></span></label>
         <label class="set">Inverser l'axe Y <input type="checkbox" id="s-inv"><span></span></label>
         <label class="set">Aide au départ <input type="checkbox" id="s-help"><span></span></label>
-        <label class="set">Qualité <select id="s-q"><option value="auto">Auto</option><option value="low">Basse</option><option value="medium">Moyenne</option><option value="high">Haute</option></select><span></span></label>
+        <label class="set">Qualité <select id="s-q"><option value="auto">Auto (s'adapte)</option><option value="min">Très basse</option><option value="low">Basse</option><option value="medium">Moyenne</option><option value="high">Haute</option></select><span></span></label>
+        <label class="set">Résolution <input type="range" id="s-rs" min="0.5" max="1" step="0.05"><output id="o-rs"></output></label>
       </div>
       <div class="section">Activités chronométrées (facultatives)</div>
       <div class="row2">
@@ -188,25 +190,35 @@ html, body { height: 100%; margin: 0; background: #0f1012; color: var(--ink); fo
         <button class="btn small" id="act-boucle">Tour de la Boucle</button>
         <button class="btn small" id="act-stop" hidden>Arrêter le défi</button>
       </div>
-      <p class="note">Touches : <strong>R</strong> retour à l'élan · <strong>F1</strong> réglages de physique.</p>
+      <p class="note">Touches : <strong>R</strong> retour à l'élan · <strong>F1</strong> réglages de physique et graphismes (qualité, résolution, images/s).</p>
       <p class="note"><strong>Limite technique : 400 m/s (1 440 km/h).</strong> Au-delà, la vitesse est plafonnée. Le frein (Ctrl) agit au sol comme en l'air. Ctrl + W peut fermer l'onglet dans certains navigateurs : le jeu demande confirmation avant de quitter, et le plein écran capture ce raccourci quand le navigateur le permet.</p>
     </div>
   </div>
 
   <div class="screen tuner" id="tuner" hidden>
     <div class="col">
-      <div class="brand"><div class="eyebrow">F1 · Réglages de jeu</div><h1 style="font-size:56px">Physique</h1></div>
+      <div class="brand"><div class="eyebrow">F1 · Réglages de jeu</div><h1 style="font-size:56px">Réglages</h1></div>
       <div class="perf" id="perf"></div>
-      <div class="section">Préréglages</div>
+      <div class="section">Graphismes (appliqué en direct)</div>
+      <div class="row2" id="qbtns">
+        <button class="preset" data-q="auto">Auto</button>
+        <button class="preset" data-q="min">Très basse</button>
+        <button class="preset" data-q="low">Basse</button>
+        <button class="preset" data-q="medium">Moyenne</button>
+        <button class="preset" data-q="high">Haute</button>
+      </div>
+      <label class="set">Résolution <input type="range" id="t-rs" min="0.5" max="1" step="0.05"><output id="to-rs"></output></label>
+      <p class="note" id="qnote"></p>
+      <label class="set">Compteur d'images <input type="checkbox" id="s-fps"><span></span></label>
+      <div class="section">Physique · préréglages</div>
       <div class="row2" id="presets">
         <button class="preset" data-preset="arcade">Arcade</button>
         <button class="preset" data-preset="standard">Standard</button>
         <button class="preset" data-preset="source">Source classique</button>
       </div>
       <p class="note" id="presetnote"></p>
-      <div class="section">Réglage fin (appliqué en direct)</div>
+      <div class="section">Physique · réglage fin (appliqué en direct)</div>
       <div class="settings" id="physsliders"></div>
-      <label class="set">Compteur d'images <input type="checkbox" id="s-fps"><span></span></label>
       <div><button class="btn primary" id="tuner-close">Reprendre (F1)</button></div>
     </div>
   </div>

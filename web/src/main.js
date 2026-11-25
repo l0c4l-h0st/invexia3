@@ -9,7 +9,7 @@ import { GEO } from './core/geo.js';
 import { WorldBuilder } from './world/builder.js';
 import { buildWorld } from './world/layout.js';
 import { Sectors } from './world/sectors.js';
-import { WorldRenderer } from './render/scene.js';
+import { WorldRenderer, QUALITY, QUALITY_ORDER } from './render/scene.js';
 import { ViewModel } from './view/viewmodel.js';
 import { AudioEngine } from './audio/audio.js';
 import { Bot, headingOf, wrap } from './test/bot.js';
@@ -24,6 +24,8 @@ const settings = (() => {
 })();
 if (TEST.settings) Object.assign(settings, TEST.settings);
 if (settings.fpsCounter === undefined) settings.fpsCounter = true;
+if (!(settings.quality in QUALITY) && settings.quality !== 'auto') settings.quality = 'auto';
+settings.renderScale = Math.min(1, Math.max(0.5, +settings.renderScale || 1));
 const save = () => { try { localStorage.setItem('velocity.settings', JSON.stringify(settings)); } catch { /* stockage indisponible */ } };
 const store = { get(k, d) { try { const v = localStorage.getItem(k); return v === null ? d : JSON.parse(v); } catch { return d; } }, set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch { /* rien */ } } };
 
@@ -81,9 +83,10 @@ async function boot() {
   const canvas = $('view');
   let quality = TEST.quality || settings.quality;
   const probe = (() => { try { const gl = canvas.getContext('webgl2') || canvas.getContext('webgl'); const ext = gl && gl.getExtension('WEBGL_debug_renderer_info'); return ext ? String(gl.getParameter(ext.UNMASKED_RENDERER_WEBGL)) : ''; } catch { return ''; } })();
-  if (quality === 'auto') quality = /swiftshader|llvmpipe|software/i.test(probe) ? 'low' : 'medium';
+  if (quality === 'auto') quality = autoQuality(probe);
   const R = new WorldRenderer(canvas, quality);
-  G.quality = quality; G.gpu = probe;
+  G.quality = R.quality; G.gpu = probe;
+  G.autoQ = { on: !TEST.quality && settings.quality === 'auto', t: 0, frames: 0, grace: 4, steps: 0, hinted: false, slowT: 0 };
   setLoad(0.6, 'Terrain et horizon…'); await nextFrame();
   R.buildTerrain(terrain, info.roads);
   setLoad(0.72, 'Chargement des secteurs proches…'); await nextFrame();
@@ -100,10 +103,11 @@ async function boot() {
   Object.assign(G, { terrain, col, B, info, sectors, R, vm, audio, player, input });
   const onResize = () => {
     const w = window.innerWidth, h = window.innerHeight;
-    R.resize(w, h, TEST.renderScale || 1);
+    R.resize(w, h, TEST.renderScale || settings.renderScale);
     vm.resize(w / h);
   };
   window.addEventListener('resize', onResize);
+  G.onResize = onResize;
   onResize();
   applySettings();
   bindUI();
@@ -125,6 +129,7 @@ function applySettings() {
   }
   $('s-dfov').checked = settings.dynamicFov; $('s-lines').checked = settings.speedLines; $('s-inv').checked = settings.invertY; $('s-help').checked = settings.showHelp;
   $('s-q').value = settings.quality;
+  syncGfxUI();
 }
 
 function bindUI() {
@@ -148,7 +153,9 @@ function bindUI() {
   $('s-lines').addEventListener('change', (e) => { settings.speedLines = e.target.checked; save(); });
   $('s-inv').addEventListener('change', (e) => { settings.invertY = e.target.checked; save(); });
   $('s-help').addEventListener('change', (e) => { settings.showHelp = e.target.checked; save(); if (e.target.checked) G.help.shown = false; });
-  $('s-q').addEventListener('change', (e) => { settings.quality = e.target.value; save(); toast('Qualité enregistrée', 'Appliquée au prochain chargement de la page'); });
+  $('s-q').addEventListener('change', (e) => setQualityChoice(e.target.value));
+  for (const id of ['s-rs', 't-rs']) $(id).addEventListener('input', (e) => setRenderScale(+e.target.value));
+  document.querySelectorAll('#qbtns .preset').forEach((b) => b.addEventListener('click', () => setQualityChoice(b.dataset.q)));
   $('act-coulees').addEventListener('click', () => startActivity('coulees'));
   $('act-boucle').addEventListener('click', () => startActivity('boucle'));
   $('act-stop').addEventListener('click', () => { stopActivity(); startPlay(false); });
@@ -208,6 +215,58 @@ function markPreset() {
   document.querySelectorAll('#presets .preset').forEach((b) => b.classList.toggle('on', b.dataset.preset === found));
   $('presetnote').textContent = found ? PRESET_NOTES[found] : 'Réglage personnalisé.';
 }
+// ---------------- graphismes ----------------
+/** Qualité de départ en mode Auto, d'après le processeur graphique annoncé par le navigateur. */
+function autoQuality(gpu) {
+  if (/swiftshader|llvmpipe|software|microsoft basic/i.test(gpu)) return 'min';
+  if (/intel.*(hd|uhd) graphics|mali|adreno|powervr|videocore|gma/i.test(gpu)) return 'low';
+  return 'medium';
+}
+function syncGfxUI() {
+  $('s-q').value = settings.quality;
+  for (const id of ['s-rs', 't-rs']) $(id).value = settings.renderScale;
+  const pct = `${Math.round(settings.renderScale * 100)} %`;
+  $('o-rs').textContent = pct; $('to-rs').textContent = pct;
+  document.querySelectorAll('#qbtns .preset').forEach((b) => b.classList.toggle('on', b.dataset.q === settings.quality));
+  const Q = QUALITY[G.quality];
+  const aaNote = G.R && G.R.aa !== Q.aa ? ' · lissage modifié au prochain chargement' : '';
+  $('qnote').textContent = `${settings.quality === 'auto' ? 'Auto → ' : ''}${Q.label} : ombres ${Q.shadows ? 'oui' : 'non'}, densité de pixels ×${Q.pr}, résolution ${Math.round(settings.renderScale * 100)} %, portée ${Math.round(Q.view * 100)} %${aaNote}.`;
+}
+function applyQuality(level, why = '') {
+  G.R.setQuality(level);
+  G.quality = level;
+  G.autoQ.grace = 3; G.autoQ.t = 0; G.autoQ.frames = 0;
+  syncGfxUI();
+  if (why) toast(why, `${QUALITY[level].label} · F1 pour changer`);
+}
+function setQualityChoice(choice) {
+  settings.quality = choice; save();
+  G.autoQ.on = choice === 'auto';
+  applyQuality(choice === 'auto' ? autoQuality(G.gpu) : choice);
+  G.audio.play('ui');
+}
+function setRenderScale(v) {
+  settings.renderScale = Math.min(1, Math.max(0.5, v)); save();
+  G.onResize();
+  syncGfxUI();
+}
+/** Mode Auto : baisse d'un cran si les images/s restent basses ; sinon simple conseil. */
+function watchPerf(rawDt) {
+  const A = G.autoQ;
+  if (G.state !== 'playing' || TEST.quality) { A.t = 0; A.frames = 0; return; }
+  if (A.grace > 0) { A.grace -= rawDt; return; }
+  A.t += rawDt; A.frames++;
+  if (A.t < 4) return;
+  const fps = A.frames / A.t;
+  A.t = 0; A.frames = 0;
+  if (fps >= 38) { A.slowT = 0; return; }
+  const i = QUALITY_ORDER.indexOf(G.quality);
+  if (A.on && i > 0) { A.steps++; applyQuality(QUALITY_ORDER[i - 1], 'Qualité auto abaissée'); return; }
+  if (A.on && settings.renderScale > 0.7 && fps < 30) { A.steps++; setRenderScale(settings.renderScale - 0.15); toast('Résolution auto abaissée', `${Math.round(settings.renderScale * 100)} % · F1 pour changer`); return; }
+  A.slowT += 4;
+  if (!A.on && !A.hinted && A.slowT >= 8) { A.hinted = true; toast(`Seulement ${Math.round(fps)} images/s`, 'F1 → Graphismes : baisse la qualité ou la résolution'); }
+}
+
 function setPreset(name) { applyPhys(PRESETS[name]); savePhys(); refreshTuner(); G.audio.play('ui'); }
 function refreshTuner() {
   for (const [k, , , , , fmt] of TUNABLE) { $(`p-${k}`).value = PHYS[k]; $(`po-${k}`).textContent = fmt(PHYS[k]); }
@@ -222,6 +281,7 @@ function openTuner() {
   G.audio.suspend();
   $('tuner').hidden = false; $('hud').hidden = true;
   refreshTuner();
+  syncGfxUI();
 }
 
 function enterPlaying() {
@@ -383,6 +443,7 @@ function frame(now) {
   G.frames++; G.fpsT += rawDt;
   G.frameMs.push(rawDt * 1000); if (G.frameMs.length > 240) G.frameMs.shift();
   if (G.fpsT >= 1) { G.fps = G.frames / G.fpsT; G.frames = 0; G.fpsT = 0; }
+  watchPerf(rawDt);
   const { player: pl, input, R, vm, audio } = G;
   let mdx = 0, mdy = 0;
 
@@ -704,6 +765,9 @@ Object.assign(window.__velocity, {
   phys: () => ({ ...PHYS }),
   setPreset: (n) => setPreset(n),
   openTuner: () => openTuner(),
+  setQuality: (q) => setQualityChoice(q),
+  setRenderScale: (v) => setRenderScale(v),
+  gfx: () => ({ quality: G.quality, choice: settings.quality, renderScale: settings.renderScale, pixelRatio: G.R.renderer.getPixelRatio(), shadows: G.R.renderer.shadowMap.enabled, aa: G.R.aa, fogDensity: G.R.scene.fog.density, pMax: G.R.pMax, bufferW: G.R.renderer.domElement.width, bufferH: G.R.renderer.domElement.height, auto: { ...G.autoQ } }),
   syncInfo: () => ({ live: { ...G.sync }, last: G.syncLast }),
   vmPose: () => ({ p: G.vm.right.position.toArray(), q: G.vm.right.quaternion.toArray(), k: G.vm.knife.matrix.elements.slice(12, 15), spin: G.vm.state.spin, fingers: G.vm.rig.fingers.m[0].rotation.x }),
   vmInfo: () => ({ fidgets: G.vm.fidget.count, fidget: G.vm.fidget.clip && G.vm.fidget.clip.name, inspect: G.vm.inspect.clip && G.vm.inspect.clip.name, spin: G.vm.state.spin, toss: G.vm.state.toss }),

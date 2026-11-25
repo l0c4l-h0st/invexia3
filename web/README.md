@@ -1,4 +1,4 @@
-# Velocity FPS — Friche Ardente (v2.1)
+# Velocity FPS — Friche Ardente (v2.2)
 
 Balade libre à très haute vitesse dans une friche industrielle, jouable dans un navigateur de bureau.
 Aucun moteur à installer : `index.html` (à la racine du dépôt) et `web/dist/velocity-fps.html` sont des
@@ -20,7 +20,7 @@ Ouvrir `index.html` (ou `web/dist/velocity-fps.html`) dans Chrome, Edge ou Firef
 | C | glissade au sol (en sprint), plongeon en l'air |
 | F | figures au karambit : trois enchaînements à tour de rôle (vitrine et double tour, lancer-rattraper, tourbillon et estoc), en plein saut sans bloquer les commandes |
 | R | retour à l'élan : ≈3 s en arrière sur un appui stable, vitesse conservée (appuis rapprochés = plus loin) |
-| F1 | réglages de physique en direct (préréglages Arcade, Standard, Source classique) et images/s |
+| F1 | réglages en direct : graphismes (qualité, résolution, images/s) et physique (préréglages Arcade, Standard, Source classique) |
 | Échap | pause et réglages |
 | H | afficher / masquer l'aide |
 
@@ -28,6 +28,24 @@ Ouvrir `index.html` (ou `web/dist/velocity-fps.html`) dans Chrome, Edge ou Firef
 
 Sous le compteur de vitesse, la **jauge de synchronisation** indique pendant chaque saut la part du temps
 où la souris tourne du même côté que la touche de strafe, et le gain de vitesse du dernier saut.
+
+## Graphismes et PC modestes
+
+Qualité réglable **en direct** (F1, ou Échap → Réglages), sans recharger la page :
+
+| Niveau | Ombres | Densité de pixels max | Portée du chargement | Fumées |
+| --- | --- | --- | --- | --- |
+| Très basse | non | ×0,6 | 70 % (brume plus dense) | 120 particules, sans flammes |
+| Basse | non | ×0,75 | 85 % | 320 particules |
+| Moyenne | 1024² | ×1 | 100 % | 700 particules |
+| Haute | 2048² | ×1,5 | 115 % | 700 particules |
+
+- **Résolution** (50 à 100 %) : le levier le plus efficace sur une carte graphique faible.
+- **Auto** (par défaut) : niveau de départ choisi d'après la carte graphique annoncée par le navigateur
+  (rendu logiciel → Très basse, graphique intégré Intel HD/UHD → Basse, sinon Moyenne), puis baisse d'un cran
+  si les images/s restent sous 38 pendant 4 s ; au plus bas, la résolution descend jusqu'à 70 %.
+- Hors Auto, un message conseille F1 si les images/s restent faibles.
+- Le lissage (anticrénelage) dépend du contexte WebGL : il change au prochain chargement de la page.
 
 ## Le karambit « KR-9 Serre »
 
@@ -69,6 +87,7 @@ node tools/sim.mjs   # simulateur physique hors navigateur (bhop, surf, frein)
 node tools/worldcheck.mjs  # construit le monde et vérifie quelques invariants
 node tests/e2e.mjs   # tests de bout en bout dans Chromium (Playwright)
 node tests/moves.mjs # sprint, glissade, plongeon, secousses réglables jusqu'à zéro
+node tests/quality.mjs # niveaux de qualité en direct, résolution, mode Auto
 ```
 
 Arborescence :
